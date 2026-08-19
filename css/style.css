@@ -445,6 +445,22 @@
     position:absolute; left:0; top:0; bottom:0; width:6px;
     background:rgba(11,18,32,0.25);
   }
+  .book-spine.cover-art{
+    height:150px;
+    overflow:hidden;
+    background:#0B1F3A;
+  }
+  .book-spine.cover-art .cover-img{
+    position:absolute;
+    width:120%;
+    height:144%;
+    left:-10%;
+    top:-22%;
+    background-size:cover;
+    background-position:center 30%;
+    transform:rotate(-7deg);
+    box-shadow:0 10px 24px rgba(0,0,0,0.45);
+  }
   .book-body{ padding:16px 18px 20px; }
   .book-body .b-title{ font-family:'Space Grotesk'; font-weight:600; font-size:0.98rem; margin-bottom:2px; }
   .book-body .b-author{ font-family:'IBM Plex Mono', monospace; font-size:0.75rem; color:var(--muted); margin-bottom:10px; display:block; }
