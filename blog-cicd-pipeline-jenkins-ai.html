@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>From Commit to Production: A Jenkins Pipeline, Stage by Stage — Peri Trigkas</title>
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+<link rel="apple-touch-icon" href="icon.png">
+<link rel="manifest" href="site.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a href="index.html#top" class="brand"><span class="dot"></span> Peri Trigkas</a>
+    <ul class="navlinks" id="navlinks">
+      <li><a href="index.html#journey">Journey</a></li>
+      <li><a href="index.html#skills">Skills</a></li>
+      <li><a href="index.html#experience">Experience</a></li>
+      <li><a href="index.html#blog">Field notes</a></li>
+      <li><a href="index.html#books">Books</a></li>
+      <li><a href="index.html#hobbies">Beyond Work</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+    </ul>
+    <button class="burger" id="burgerBtn" aria-label="Open menu" aria-expanded="false" aria-controls="navlinks">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<article class="post-hero">
+  <div class="wrap">
+    <a class="back-link mono" href="index.html#blog">&larr; Back to Field notes</a>
+    <h1>From Commit to Production: A Jenkins Pipeline, Stage by Stage</h1>
+    <span class="post-date mono">21 Aug 2026</span>
+    <div class="post-cover"><img src="img/blog/cicd-pipeline-jenkins-ai/cover.jpg" alt="From Commit to Production: A Jenkins Pipeline, Stage by Stage" loading="lazy"></div>
+  </div>
+</article>
+
+<div class="wrap">
+  <div class="post-body">
+<p>A CI/CD pipeline is really just a series of gates, each one cheaper to fail at than the next. <strong>Fail fast</strong> on a lint error, not three hours later on a failed production deploy. Here&#39;s roughly how I&#39;ve built these in Jenkins, and where AI tooling actually changes the work rather than just decorating it.</p>
+<h2>What actually needs to be in the pipeline</h2>
+<p>Every stage exists to catch a specific class of problem before it gets more expensive to fix, but the exact shape of a pipeline varies by team and by what&#39;s actually shipping. The dashboard below is one example of what that can look like, not a template to copy stage for stage:</p>
+<p><img src="img/blog/cicd-pipeline-jenkins-ai/cicd-dashboard.jpg" alt="A CI/CD pipeline dashboard running from Commit through Lint, Unit Tests, Contract Tests, Build, Staging, Integration Tests, Performance Tests, Approval, Production, Smoke Tests, and Monitor, with a note that failures are cheaper to catch early and more expensive the later they&#39;re found"></p>
+<p>What actually matters isn&#39;t matching those box names, it&#39;s a handful of decisions that hold regardless of the tool. A PR or preview environment should answer one question fast: does this obviously work. Unit tests, static analysis, and a quick contract check against whatever the change touches belong there, anything slower than a few minutes defeats the point of a preview environment in the first place. <strong>Staging</strong> is where it&#39;s worth being slower and more thorough: full integration tests, a proper regression pass, a performance run if the change touches anything latency-sensitive. <strong>Production</strong> itself mostly runs smoke tests and leans on <strong>monitoring</strong> rather than more testing, by that point the job is watching for problems, not hunting for them.</p>
+<p>The biggest lever for keeping a pipeline fast is refusing to spin up more than a given stage actually needs. If a test only cares that your service sends the right request to a downstream API, <strong>mock</strong> that API rather than standing up the real thing, a WireMock stub or a Pact contract answers the same question without the cost of a second service booting, a shared database seeding, or a flaky network call between two things that don&#39;t need to be real yet. Save the real downstream dependencies for the handful of tests that genuinely need to prove the integration works end to end, and let everything else run against a mock that starts in milliseconds instead of minutes. That distinction, mocked versus real, is usually a better lever for pipeline speed than <strong>parallelizing</strong> more aggressively, though that helps too: any stages with no dependency on each other&#39;s output should run at the same time rather than back to back, the only real cost is a bit more compute, and compute is cheaper than a developer waiting.</p>
+<p><img src="img/blog/cicd-pipeline-jenkins-ai/component-mock.jpg" alt="A component test stage exchanging requests with a mock service: POST /payments, GET /accounts, POST /refunds going out, stubbed 201, 400, and 503 responses coming back, covering the happy path, invalid input, and downstream failure"></p>
+<p>Manual approval before production is the one gate I go back and forth on. Done right, it&#39;s someone glancing at a diff and catching the one thing no pipeline would ever know to check, a deploy window that&#39;s a bad idea this week for reasons that have nothing to do with the code. Done lazily, it&#39;s a rubber stamp nobody&#39;s really reading anymore, friction dressed up as safety. I keep it for anything with real blast radius, how trades settle, anything touching money, and skip it for a marketing page nobody&#39;s betting anything on.</p>
+<p>End-to-end tests are the other one worth arguing about. They&#39;re the closest thing to proof that a real user journey actually works, and nothing else gives quite that signal. They&#39;re also slow, expensive to maintain, and the first thing to go flaky when an unrelated part of the system changes. <strong>Shift-left testing</strong> is the argument that most of what E2E tests are trying to catch should be caught earlier and cheaper: contract tests instead of a full round trip through three services, component tests instead of driving a real browser, static analysis instead of waiting for a test to fail at all. I don&#39;t think that makes E2E tests obsolete, it makes them something to spend sparingly, reserved for the handful of journeys where nothing else gives real confidence, checkout, login, whatever actually loses money or trust if it breaks, and pushes everything else as far left as it&#39;ll go.</p>
+<p>Jenkins&#39; job in all of this isn&#39;t just running commands in order, it&#39;s the thing that fails loudly and stops the pipeline the moment any of these gates doesn&#39;t pass, so a bad build physically cannot reach the next stage.</p>
+<h2>Where AI actually speeds up building this</h2>
+<p>The genuinely useful part isn&#39;t AI writing the whole pipeline for you, it&#39;s compressing the boilerplate around it. I use <strong>Claude</strong> and <strong>GitHub Copilot</strong> to scaffold new Jenkinsfile stages from a description of what needs gating, draft the first pass of a test suite from acceptance criteria so I&#39;m editing instead of starting from a blank file, and generate <strong>synthetic test data</strong> for edge cases I&#39;d otherwise have to construct by hand. None of that replaces deciding what should actually gate a deploy, that&#39;s still a judgment call about risk, but it collapses the distance between &quot;I know what stage I need&quot; and &quot;the stage exists and runs.&quot;</p>
+<p>It also speeds up triage when a stage fails. Instead of scrolling a wall of Jenkins console output, I&#39;ll have it summarize what actually broke, which test, what the assertion expected versus got, whether it looks like a real regression or a flaky environment issue, so I&#39;m reading a two line summary before I decide whether it&#39;s worth a deeper look.</p>
+<h2>Where AI helps after it ships</h2>
+<p>This is where it earns its keep the most, honestly. Datadog&#39;s anomaly detection already flags when a metric moves outside its normal pattern without anyone defining a static threshold for it, error rate creeping up, latency drifting on one endpoint, that kind of thing. Layer an LLM on top of the alert and the incident, and instead of a page of raw logs and traces across four services, I&#39;m getting a plain-language summary: which service, which endpoint, what changed around the same deploy window, and a first hypothesis on <strong>root cause</strong>.</p>
+<p>It doesn&#39;t replace the investigation, the same way automation doesn&#39;t replace exploratory testing. It gets me to the starting point faster. Root-causing that trading tenor defect still took someone actually confirming the hypothesis against the real data. What AI changes is how long it takes to get from &quot;something&#39;s wrong&quot; to &quot;here&#39;s where to start looking,&quot; which on a bad on-call night is most of the battle.</p>
+
+  </div>
+</div>
+
+<footer id="contact">
+  <div class="wrap">
+    <span class="eyebrow mono">// let's talk</span>
+    <h2>Get in touch</h2>
+    <p>Based in Cardiff, open to remote roles, always happy to talk quality, automation or growth mindset.</p>
+    <div class="contact-links">
+      <a href="mailto:ptrigkas@gmail.com">✉ ptrigkas@gmail.com</a>
+      <a href="tel:07827421616">☎ 07827 421616</a>
+      <a href="index.html#top">📍 Cardiff, Wales</a>
+    </div>
+    <div class="foot-note mono">Wired for growth. — built with care, meant to be edited.</div>
+  </div>
+</footer>
+
+<script src="js/app.js" defer></script>
+
+</body>
+</html>

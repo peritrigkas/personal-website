@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manual Testing vs Automation: Neither Wins Alone — Peri Trigkas</title>
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+<link rel="apple-touch-icon" href="icon.png">
+<link rel="manifest" href="site.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a href="index.html#top" class="brand"><span class="dot"></span> Peri Trigkas</a>
+    <ul class="navlinks" id="navlinks">
+      <li><a href="index.html#journey">Journey</a></li>
+      <li><a href="index.html#skills">Skills</a></li>
+      <li><a href="index.html#experience">Experience</a></li>
+      <li><a href="index.html#blog">Field notes</a></li>
+      <li><a href="index.html#books">Books</a></li>
+      <li><a href="index.html#hobbies">Beyond Work</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+    </ul>
+    <button class="burger" id="burgerBtn" aria-label="Open menu" aria-expanded="false" aria-controls="navlinks">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<article class="post-hero">
+  <div class="wrap">
+    <a class="back-link mono" href="index.html#blog">&larr; Back to Field notes</a>
+    <h1>Manual Testing vs Automation: Neither Wins Alone</h1>
+    <span class="post-date mono">16 Aug 2026</span>
+    <div class="post-cover"><img src="img/blog/manual-vs-automation/cover.jpg" alt="Manual Testing vs Automation: Neither Wins Alone" loading="lazy"></div>
+  </div>
+</article>
+
+<div class="wrap">
+  <div class="post-body">
+<p>Every few months someone asks, usually half joking, whether automation is going to replace manual testing entirely. It won&#39;t, and the question itself is the wrong one. I&#39;ve spent nine years moving between the two, from writing Cucumber feature files by hand at Computershare to building performance frameworks from scratch at Currencycloud, and the pattern is always the same: manual and automation aren&#39;t competing for the same job. Most of the pain I&#39;ve seen on real projects comes from using one where the other was needed.</p>
+<h2>What manual testing is actually for</h2>
+<p>Manual testing earns its keep anywhere <strong>judgment</strong> matters more than repetition. A regression suite will happily go green while a checkout flow feels subtly wrong to an actual human. It won&#39;t tell you that. A person clicking through it will.</p>
+<p><strong>Postman</strong> is where this shows up most clearly for me day to day. Before anything gets codified into an automated check, I&#39;m usually in Postman poking at an API by hand, sending malformed input, missing headers, values just outside the expected range, watching what comes back. That&#39;s <strong>exploratory work</strong>, not a script, and it&#39;s exactly how I&#39;ve found error responses that leaked raw internals instead of explaining the fault to whoever hit them. No automated suite was going to stumble onto that on its own. It took someone deliberately trying to break the thing.</p>
+<p><img src="img/blog/manual-vs-automation/api-testing.jpg" alt="Manually working through an API request and its error response before writing any automated check"></p>
+<p>It&#39;s also the right call early, before a feature has settled. And it&#39;s the only sane option for genuinely one off scenarios: a specific migration, a one time config check, something you&#39;ll verify once and never touch again. I once root-caused a trading tenor calculation defect that let weekend spot trades through undetected, and that started as <strong>manual digging</strong> through an odd case, not a scripted check that happened to exist.</p>
+<h2>What automation is actually for</h2>
+<p>Automation earns its keep anywhere the same check needs to run the same way, over and over, without anyone having to remember to do it. At Computershare that meant BDD feature files and <strong>regression suites</strong> running through Jenkins on every build, proving yesterday&#39;s fix hadn&#39;t quietly broken something three modules away. A human re-clicking the same 40 steps by hand isn&#39;t testing at that point, it&#39;s just tedium with a chance of missing something on the fifth run.</p>
+<p><strong>Performance testing</strong> is the case where automation isn&#39;t just faster, it&#39;s the only option. I built our performance framework at Currencycloud from scratch, starting with Gatling and later moving to K6, because there&#39;s no manual version of simulating realistic concurrent load. You either script it or you don&#39;t test it at all. Selenium and Docker did the same job for UI regression and for keeping test environments consistent and disposable rather than &quot;works on my machine.&quot; And <strong>Datadog</strong> closes the loop in production: automation and monitoring together catch what a testing pass, manual or automated, never got the chance to see before it shipped.</p>
+<p><img src="img/blog/manual-vs-automation/ci-cd-performance.jpg" alt="A CI/CD pipeline with performance and load test results reporting live across builds"></p>
+<h2>The actual decision</h2>
+<p>The question that matters isn&#39;t &quot;manual or automated,&quot; it&#39;s how often this runs and how stable what it&#39;s checking actually is. Something you&#39;ll run once, on a flow still in flux, stays manual, the way I still work API edge cases in Postman before anything&#39;s worth scripting. Something that runs on every build, against a flow that&#39;s settled, like the regression suites in Jenkins or the load profiles in <strong>K6</strong>, gets automated.</p>
+<p>These days I also lean on <strong>Claude</strong> and <strong>GitHub Copilot</strong> to move faster through both, drafting test scaffolding, reviewing PRs, but they haven&#39;t changed the underlying split. They&#39;re a faster way to do the same two jobs, not a third option. The best setups I&#39;ve built don&#39;t pick a side. Automation carries the repeatable load so I&#39;ve got the time left over for the exploratory work only a person can actually do.</p>
+
+  </div>
+</div>
+
+<footer id="contact">
+  <div class="wrap">
+    <span class="eyebrow mono">// let's talk</span>
+    <h2>Get in touch</h2>
+    <p>Based in Cardiff, open to remote roles, always happy to talk quality, automation or growth mindset.</p>
+    <div class="contact-links">
+      <a href="mailto:ptrigkas@gmail.com">✉ ptrigkas@gmail.com</a>
+      <a href="tel:07827421616">☎ 07827 421616</a>
+      <a href="index.html#top">📍 Cardiff, Wales</a>
+    </div>
+    <div class="foot-note mono">Wired for growth. — built with care, meant to be edited.</div>
+  </div>
+</footer>
+
+<script src="js/app.js" defer></script>
+
+</body>
+</html>
