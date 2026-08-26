@@ -121,7 +121,7 @@ ${post.bodyHtml}
       <a href="tel:07827421616">☎ 07827 421616</a>
       <a href="index.html#top">📍 Cardiff, Wales</a>
     </div>
-    <div class="foot-note mono">Wired for growth. — built with care, meant to be edited.</div>
+    <div class="foot-note mono">Wired for growth — one small check at a time.</div>
   </div>
 </footer>
 
@@ -209,7 +209,7 @@ ${cardsHtml}
       <a href="tel:07827421616">☎ 07827 421616</a>
       <a href="index.html#top">📍 Cardiff, Wales</a>
     </div>
-    <div class="foot-note mono">Wired for growth. — built with care, meant to be edited.</div>
+    <div class="foot-note mono">Wired for growth — one small check at a time.</div>
   </div>
 </footer>
 
