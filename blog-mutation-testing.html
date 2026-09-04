@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mutation Testing — Testing Your Tests — Peri Trigkas</title>
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+<link rel="apple-touch-icon" href="icon.png">
+<link rel="manifest" href="site.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a href="index.html#top" class="brand"><span class="dot"></span> Peri Trigkas</a>
+    <ul class="navlinks" id="navlinks">
+      <li><a href="index.html#journey">Journey</a></li>
+      <li><a href="index.html#skills">Skills</a></li>
+      <li><a href="index.html#experience">Experience</a></li>
+      <li><a href="index.html#blog">Field notes</a></li>
+      <li><a href="index.html#books">Books</a></li>
+      <li><a href="index.html#hobbies">Beyond Work</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+    </ul>
+    <button class="burger" id="burgerBtn" aria-label="Open menu" aria-expanded="false" aria-controls="navlinks">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<article class="post-hero">
+  <div class="wrap">
+    <a class="back-link mono" href="index.html#blog">&larr; Back to Field notes</a>
+    <h1>Mutation Testing — Testing Your Tests</h1>
+    <span class="post-date mono">4 Sept 2026</span>
+    <div class="post-cover"><img src="img/blog/mutation-testing/cover.jpg" alt="Mutation Testing — Testing Your Tests" loading="lazy"></div>
+  </div>
+</article>
+
+<div class="wrap">
+  <div class="post-body">
+<p>I still remember the first time someone showed me a coverage report sitting at 96% on a service that, a week later, shipped a bug a single unit test should have caught in about four seconds. The line was covered. The assertion just wasn&#39;t checking anything meaningful. That&#39;s the moment mutation testing stopped being a term I&#39;d seen in a conference talk and became something I actually wanted to try.</p>
+<h2>What mutation testing actually is</h2>
+<p>Line and branch coverage answer one question: did this code <em>run</em> during the tests? They say nothing about whether the tests would notice if that code were wrong. Mutation testing answers the question coverage can&#39;t.</p>
+<p>The idea is almost cheeky. A mutation testing tool takes your source code and deliberately breaks it, in small, mechanical ways: it flips a <code>&gt;</code> to <code>&gt;=</code>, changes <code>true</code> to <code>false</code>, swaps <code>+</code> for <code>-</code>, deletes a line, changes a return value. Each one of these tiny sabotaged copies is called a <strong>mutant</strong>. Then it reruns your test suite against every mutant, one at a time.</p>
+<p>If a test fails, the mutant is &quot;killed&quot; — good, your tests caught the injected bug. If every test still passes against the mutated code, the mutant &quot;survives&quot; — and that&#39;s the uncomfortable bit, because it means your tests wouldn&#39;t have noticed that exact bug if it had been written by accident. A codebase can have great coverage numbers and still be full of surviving mutants, which is really just a formal way of saying the tests are watching the code run without checking that it does the right thing.</p>
+<p><img src="img/blog/mutation-testing/mutant-lifecycle.jpg" alt="96% coverage looks clean, but mutation testing reveals a hidden boundary gap at 18 that the tests never actually check"></p>
+<h2>How it&#39;s actually done, and what tends to work</h2>
+<p>In practice, running a mutation testing tool is the easy part; the config file usually asks for a source path, a test command, and maybe a time budget, and off it goes. The harder part is making the results useful rather than a wall of noise. A few things I&#39;ve found actually matter:</p>
+<ul>
+<li><strong>Scope it deliberately.</strong> Running mutation testing over an entire monolith on every commit is a great way to make everyone hate it. Point it at the module you&#39;re actually changing, or at business-critical logic (pricing, auth, calculations) rather than glue code and DTOs.</li>
+<li><strong>Exclude the boring stuff.</strong> Getters, setters, logging calls, generated code — mutating these produces surviving mutants that nobody should lose sleep over. Most tools let you exclude files or annotate methods; use it.</li>
+<li><strong>Treat a surviving mutant as a question, not a failure.</strong> Sometimes it reveals a genuinely missing assertion. Sometimes it reveals genuinely equivalent code (a mutant that can&#39;t actually change behaviour — more on that below). Read before you write a test just to satisfy the tool.</li>
+<li><strong>Set a threshold, not a mandate for 100%.</strong> Chasing every last mutant is a good way to write tests that exist purely to kill mutants and add nothing else. A mutation score target in the 70–85% range on critical modules is usually a healthier bar than perfection.</li>
+<li><strong>Run it incrementally where you can.</strong> Several tools support &quot;only mutate what changed in this diff,&quot; which keeps the feedback loop fast enough that people actually look at it instead of ignoring another CI tab.</li>
+</ul>
+<h2>How do you know it&#39;s actually working?</h2>
+<p>This is the part coverage numbers can&#39;t answer, and mutation testing was built precisely to answer it, so it&#39;s worth being concrete.</p>
+<p>Say you have this, in whatever language you like:</p>
+<pre><code>function isEligibleForDiscount(age) {
+  return age &gt;= 65;
+}
+</code></pre>
+<p>And a test:</p>
+<pre><code>test(&#39;eligible at 70&#39;, () =&gt; {
+  expect(isEligibleForDiscount(70)).toBe(true);
+});
+</code></pre>
+<p>Coverage says 100% — every line ran. Now mutate the boundary: <code>age &gt;= 65</code> becomes <code>age &gt; 65</code>. Run the test again. It still passes, because 70 is greater than 65 either way. The mutant survives. That survival is the tool telling you, quite precisely, that nothing in your suite actually pins down the boundary at 65. Add <code>expect(isEligibleForDiscount(65)).toBe(true)</code> and <code>expect(isEligibleForDiscount(64)).toBe(false)</code>, rerun, and that mutant now dies. That&#39;s the whole feedback loop, and it&#39;s a far more honest signal than a green coverage bar.</p>
+<p>The one wrinkle worth knowing about: <strong>equivalent mutants</strong>. Occasionally a tool generates a mutant that&#39;s technically different code but behaviourally identical for every possible input — no test, however well written, could ever kill it. These show up as permanent survivors and are the main reason nobody sane targets a 100% mutation score. Part of reading the report well is telling a genuinely equivalent mutant apart from a real gap.</p>
+<h2>Where it belongs in the pipeline</h2>
+<p>Mutation testing is slow — it reruns your whole test suite once per mutant, and a suite with a few hundred tests can generate a few thousand mutants without much effort. That cost should decide where it lives.</p>
+<p>I wouldn&#39;t run it on every commit against a full codebase; that&#39;s how you end up with a fifty-minute CI job everyone routes around. What&#39;s worked better for me:</p>
+<ul>
+<li><strong>Locally, on demand</strong>, scoped to the file or module you&#39;re actively working on, while you&#39;re still writing the tests.</li>
+<li><strong>On pull requests, scoped to the diff</strong>, mutating only the lines that changed. This is fast enough to gate a merge and catches exactly the tests-that-don&#39;t-test-anything problem while the context is fresh.</li>
+<li><strong>Nightly or weekly, full-scope</strong>, as a scheduled job against critical modules, with the mutation score tracked over time rather than enforced as a hard gate on every build.</li>
+</ul>
+<p>Unit test stage, not later. Mutation testing needs fast, isolated tests to be worth the multiplication; running it against a suite of slow end-to-end tests turns &quot;reruns the suite a thousand times&quot; into a genuinely bad afternoon.</p>
+<p><img src="img/blog/mutation-testing/pipeline-stages.jpg" alt="Mutation testing scoped to the diff on the fast PR lane, with a full nightly run against critical modules tracked as a mutation score over time"></p>
+<h2>The frameworks, and no, it&#39;s not one tool for everything</h2>
+<p>Unlike, say, HTTP clients, mutation testing tools are pretty tightly coupled to a language&#39;s runtime and test framework, because they need to actually parse and rewrite that language&#39;s code. A short, non-exhaustive tour:</p>
+<ul>
+<li><strong>Java</strong> — <strong>PIT (PITest)</strong> is the standard here, and it&#39;s genuinely good: fast, integrates with Maven/Gradle and JUnit, plays nicely with Jenkins reports.</li>
+<li><strong>JavaScript / TypeScript</strong> — <strong>Stryker</strong> (as <code>StrykerJS</code>) is the one most people reach for, works with Jest, Mocha, Jasmine, and gives a nice HTML mutation report.</li>
+<li><strong>Python</strong> — <strong>mutmut</strong> and <strong>Cosmic Ray</strong> are the common picks, both working over <code>pytest</code>.</li>
+<li><strong>C#/.NET</strong> — Stryker again, as <code>Stryker.NET</code>.</li>
+<li><strong>.NET aside</strong>, there&#39;s also <strong>Infection</strong> for PHP.</li>
+<li><strong>Mobile — Android/Kotlin</strong> — <strong>PIT</strong> still works for JVM-based Kotlin/Java Android code; there&#39;s also <strong>Piranha</strong> style tooling from some larger orgs, though it&#39;s less standardised than PIT.</li>
+<li><strong>Mobile — iOS/Swift</strong> — this is genuinely thinner ground; <strong>Muter</strong> is the closest thing to a community standard, and it&#39;s noticeably less mature than PIT or Stryker.</li>
+</ul>
+<p>So no, it isn&#39;t one framework wearing different hats per language, the way something like Playwright at least gestures toward being. Each ecosystem has its own tool, tied to its own compiler or bytecode, and mobile in particular still lags the backend/web tooling in maturity — worth knowing before you promise a team &quot;we&#39;ll just mutation-test everything&quot; across a mixed Kotlin/Swift codebase.</p>
+<h2>The debate: is it actually worth it?</h2>
+<p>This is where I&#39;ll be honest instead of tidy. Mutation testing has real, vocal skeptics, and their case isn&#39;t silly.</p>
+<p><strong>The case against:</strong> it&#39;s slow, sometimes painfully so on large suites. Equivalent mutants waste investigation time chasing survivors nobody can actually kill. Chasing a mutation score can pull a team into writing brittle, assertion-heavy tests that exist to satisfy a metric rather than to document behaviour — the same trap coverage-chasing falls into, just one level deeper. And on codebases with a lot of glue code, low-value logic, or heavy framework boilerplate, the signal-to-noise ratio can be genuinely bad.</p>
+<p><strong>The case for:</strong> used narrowly, it catches something nothing else does — tests that run code without actually checking it, which coverage tools are structurally incapable of noticing. On the modules that matter, pricing logic, auth checks, calculation engines, I&#39;ve seen it surface real gaps that a code reviewer, sprint after sprint, kept missing because the test file <em>looked</em> thorough.</p>
+<p>My honest read, after using it on and off for a few years: mutation testing works best as a targeted tool, not a blanket policy. Applied to your whole codebase as a mandatory gate, it turns into a costly box-ticking exercise that teams learn to game or ignore. Applied deliberately to the 10–20% of your code that actually carries business risk, run on the diff at PR time and full-scope on a schedule, it&#39;s one of the few tools that tells you something coverage genuinely cannot.</p>
+<h2>Wrapping up</h2>
+<p>Coverage tells you the code ran. Mutation testing tells you whether anyone would notice if it were wrong. They&#39;re not competing metrics, they&#39;re answering different questions, and only one of them is checking your tests instead of your code. It won&#39;t replace code review, and it isn&#39;t something you bolt onto every build without thinking about cost. But pointed at the handful of modules where a quiet bug would actually hurt, it&#39;s one of the more honest signals I know of that a test suite is doing its job rather than just running through the motions.</p>
+
+  </div>
+</div>
+
+<footer id="contact">
+  <div class="wrap">
+    <span class="eyebrow mono">// let's talk</span>
+    <h2>Get in touch</h2>
+    <p>Based in Cardiff, open to remote roles, always happy to talk quality, automation or growth mindset.</p>
+    <div class="contact-links">
+      <a href="mailto:ptrigkas@gmail.com">✉ ptrigkas@gmail.com</a>
+      <a href="tel:07827421616">☎ 07827 421616</a>
+      <a href="index.html#top">📍 Cardiff, Wales</a>
+    </div>
+    <div class="foot-note mono">Wired for growth — one small check at a time.</div>
+  </div>
+</footer>
+
+<script src="js/app.js" defer></script>
+
+</body>
+</html>
