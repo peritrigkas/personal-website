@@ -7,3 +7,4 @@ dist
 .idea
 *.iml
 .mcp.json
+scripts/.og-card.html
