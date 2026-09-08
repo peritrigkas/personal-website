@@ -22,3 +22,27 @@
     });
   }, { threshold:0.25 });
   items.forEach(i=>io.observe(i));
+
+  // copy-link button in the share row
+  document.querySelectorAll('.share-copy').forEach(btn=>{
+    btn.addEventListener('click', async ()=>{
+      const url = btn.getAttribute('data-copy-url') || window.location.href;
+      try{
+        await navigator.clipboard.writeText(url);
+      }catch(e){
+        const tmp = document.createElement('input');
+        tmp.value = url;
+        document.body.appendChild(tmp);
+        tmp.select();
+        try{ document.execCommand('copy'); }catch(_){}
+        document.body.removeChild(tmp);
+      }
+      if(btn.nextElementSibling && btn.nextElementSibling.classList.contains('share-copied-hint')) return;
+      btn.classList.add('is-copied');
+      const hint = document.createElement('span');
+      hint.className = 'share-copied-hint';
+      hint.textContent = 'Copied!';
+      btn.after(hint);
+      setTimeout(()=>{ hint.remove(); btn.classList.remove('is-copied'); }, 1600);
+    });
+  });
