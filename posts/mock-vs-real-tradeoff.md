@@ -2,7 +2,7 @@
 title: Mock vs Real: Where the Trade-Off Actually Bites
 excerpt: A mock is a promise about how a service behaves, a promise that breaks the moment the real thing changes and nobody's watching. Where mocks earn their keep, where contract testing closes the gap, and where only the real service will do.
 date: 2026-09-15
-image: img/blog/mock-vs-real-tradeoff/cover.jpg
+image: img/blog/mock-vs-real-tradeoff/cover.png
 ---
 
 A mock is a promise about how a service behaves. The moment the real service changes and the mock doesn't, that promise is broken, and your pipeline has no way of knowing.
@@ -24,7 +24,7 @@ That cache bug wasn't a one-off. There's a specific set of behaviours mocks tend
 
 A few more in the same bucket: connection pooling and timeouts, partial failure, and locking or concurrency. None of this is a reason to stop mocking. It's a reason to know exactly what you're not testing when you do.
 
-![The contract only covers what someone remembered to specify; load, ordering, and state drift slip through underneath it](img/blog/mock-vs-real-tradeoff/contract-gap.jpg)
+![The contract only covers what someone remembered to specify; load, ordering, and state drift slip through underneath it](img/blog/mock-vs-real-tradeoff/contract-gap.png)
 
 ## Is contract testing enough?
 
@@ -41,7 +41,7 @@ What actually tightens things beyond the contract itself:
 
 None of this replaces **exploratory testing** either. The ambiguous, badly-described error responses I've found running Postman against real UAT environments weren't things a contract would have specified in the first place. Nobody wrote a contract for "this error message doesn't say what actually went wrong."
 
-![Mocks run fast on every PR, contracts verify the shape between teams, and scheduled runs against the real service catch what neither one was written to see](img/blog/mock-vs-real-tradeoff/pipeline-lanes.jpg)
+![Mocks run fast on every PR, contracts verify the shape between teams, and scheduled runs against the real service catch what neither one was written to see](img/blog/mock-vs-real-tradeoff/pipeline-lanes.png)
 
 ## Where each one earns its place
 

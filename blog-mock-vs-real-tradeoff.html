@@ -15,16 +15,16 @@
 <meta property="og:title" content="Mock vs Real: Where the Trade-Off Actually Bites">
 <meta property="og:description" content="A mock is a promise about how a service behaves, a promise that breaks the moment the real thing changes and nobody's watching. Where mocks earn their keep, where contract testing closes the gap, and where only the real service will do.">
 <meta property="og:url" content="https://peritrigkas.netlify.app/blog-mock-vs-real-tradeoff.html">
-<meta property="og:image" content="https://peritrigkas.netlify.app/img/blog/mock-vs-real-tradeoff/cover.jpg">
-<meta property="og:image:secure_url" content="https://peritrigkas.netlify.app/img/blog/mock-vs-real-tradeoff/cover.jpg">
-<meta property="og:image:type" content="image/jpeg">
-<meta property="og:image:width" content="1400">
-<meta property="og:image:height" content="788">
+<meta property="og:image" content="https://peritrigkas.netlify.app/img/blog/mock-vs-real-tradeoff/cover.png">
+<meta property="og:image:secure_url" content="https://peritrigkas.netlify.app/img/blog/mock-vs-real-tradeoff/cover.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1672">
+<meta property="og:image:height" content="941">
 <meta property="og:image:alt" content="Mock vs Real: Where the Trade-Off Actually Bites">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Mock vs Real: Where the Trade-Off Actually Bites">
 <meta name="twitter:description" content="A mock is a promise about how a service behaves, a promise that breaks the moment the real thing changes and nobody's watching. Where mocks earn their keep, where contract testing closes the gap, and where only the real service will do.">
-<meta name="twitter:image" content="https://peritrigkas.netlify.app/img/blog/mock-vs-real-tradeoff/cover.jpg">
+<meta name="twitter:image" content="https://peritrigkas.netlify.app/img/blog/mock-vs-real-tradeoff/cover.png">
 <meta name="twitter:image:alt" content="Mock vs Real: Where the Trade-Off Actually Bites">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -64,7 +64,7 @@
       <a class="share-btn" href="https://wa.me/?text=Mock%20vs%20Real%3A%20Where%20the%20Trade-Off%20Actually%20Bites%20%E2%80%94%20Field%20notes%20by%20Peri%20Trigkas%20https%3A%2F%2Fperitrigkas.netlify.app%2Fblog-mock-vs-real-tradeoff.html" target="_blank" rel="noopener" aria-label="Share on WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm0 1.67c2.2 0 4.27.86 5.83 2.42a8.19 8.19 0 0 1 2.42 5.83c0 4.54-3.7 8.24-8.25 8.24a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.16 8.16 0 0 1-1.25-4.38c0-4.54 3.7-8.24 8.24-8.24zm4.52 10.35c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.24-.64.8-.78.97-.14.16-.29.18-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.24-1.47-1.38-1.72-.14-.25-.02-.38.11-.5.11-.11.25-.29.37-.43.13-.14.17-.24.25-.41.08-.16.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.42-.56-.42-.14 0-.31-.02-.47-.02-.16 0-.43.06-.65.31-.22.24-.86.84-.86 2.05 0 1.21.88 2.38 1 2.54.12.16 1.73 2.64 4.19 3.7.59.26 1.04.41 1.4.52.59.19 1.12.16 1.54.1.47-.07 1.47-.6 1.67-1.18.21-.58.21-1.08.14-1.18-.06-.11-.22-.17-.47-.29z"/></svg></a>
       <button type="button" class="share-btn share-copy" data-copy-url="https://peritrigkas.netlify.app/blog-mock-vs-real-tradeoff.html" aria-label="Copy link"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 1H4a2 2 0 0 0-2 2v13h2V3h11V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h10v14z"/></svg></button>
     </div>
-    <div class="post-cover"><img src="img/blog/mock-vs-real-tradeoff/cover.jpg" alt="Mock vs Real: Where the Trade-Off Actually Bites" loading="lazy"></div>
+    <div class="post-cover"><img src="img/blog/mock-vs-real-tradeoff/cover.png" alt="Mock vs Real: Where the Trade-Off Actually Bites" loading="lazy"></div>
   </div>
 </article>
 
@@ -83,7 +83,7 @@
 <li><strong>Listener and callback execution.</strong> A mock often returns success on publish without ever invoking anything downstream, so whether your subscriber logic actually runs goes untested.</li>
 </ul>
 <p>A few more in the same bucket: connection pooling and timeouts, partial failure, and locking or concurrency. None of this is a reason to stop mocking. It&#39;s a reason to know exactly what you&#39;re not testing when you do.</p>
-<p><img src="img/blog/mock-vs-real-tradeoff/contract-gap.jpg" alt="The contract only covers what someone remembered to specify; load, ordering, and state drift slip through underneath it"></p>
+<p><img src="img/blog/mock-vs-real-tradeoff/contract-gap.png" alt="The contract only covers what someone remembered to specify; load, ordering, and state drift slip through underneath it"></p>
 <h2>Is contract testing enough?</h2>
 <p>Contract testing closes a real part of this gap. A <strong>consumer-driven contract</strong> says, concretely, &quot;here&#39;s the shape of request I send and the response I expect,&quot; and a <strong>provider-side verification</strong> confirms the real service still honours it. When that&#39;s wired into both sides&#39; pipelines, a provider can&#39;t silently change a response shape without a contract test failing somewhere, which is exactly the class of bug a plain mock can&#39;t catch.</p>
 <p>It&#39;s not sufficient on its own, though. Contracts generally cover shape, not behaviour under load, ordering, or state; a contract doesn&#39;t know your endpoint is fine on the first call and wrong on the second. They only protect what someone remembered to write a contract for, so a new field or an undocumented edge case ships uncovered. And they only work if both sides actually run them and treat a failure as a blocker, not noise to wave through, the same discipline problem that lets a stale mock survive in the first place.</p>
@@ -95,7 +95,7 @@
 <li><strong>Ownership on the alert.</strong> Someone is actually notified and accountable when a provider&#39;s behaviour shifts, the same way Datadog anomaly detection means someone owns a latency spike rather than it quietly becoming normal.</li>
 </ul>
 <p>None of this replaces <strong>exploratory testing</strong> either. The ambiguous, badly-described error responses I&#39;ve found running Postman against real UAT environments weren&#39;t things a contract would have specified in the first place. Nobody wrote a contract for &quot;this error message doesn&#39;t say what actually went wrong.&quot;</p>
-<p><img src="img/blog/mock-vs-real-tradeoff/pipeline-lanes.jpg" alt="Mocks run fast on every PR, contracts verify the shape between teams, and scheduled runs against the real service catch what neither one was written to see"></p>
+<p><img src="img/blog/mock-vs-real-tradeoff/pipeline-lanes.png" alt="Mocks run fast on every PR, contracts verify the shape between teams, and scheduled runs against the real service catch what neither one was written to see"></p>
 <h2>Where each one earns its place</h2>
 <p>Mocks belong in unit tests, component tests, and most of what runs on a PR, anywhere the question is &quot;does my logic do the right thing,&quot; not &quot;does the integration actually work.&quot; That&#39;s most of a pipeline, and it should stay fast.</p>
 <p>Real services belong in staging, in a lean set of end-to-end smoke tests before a release, and in scheduled runs that aren&#39;t gating every commit but do run often enough to catch drift early. That stale-cache defect only got confirmed once someone stepped through the real behaviour under real timing. No amount of mock coverage would have surfaced it, because the mock was the thing that was wrong.</p>
