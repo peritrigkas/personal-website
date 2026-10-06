@@ -192,12 +192,8 @@ default ✓ [ 100% ] 5 VUs  00m06.3s/10m0s  100/100 shared iters
 <li><strong>Gatling</strong> reports the 50th, 75th, 95th and 99th percentiles in its console summary and HTML report, alongside min, max, mean and standard deviation.</li>
 <li><strong>JMeter</strong> depends on the listener. The Aggregate Report gives Average, Median, 90% Line, 95% Line and 99% Line, and the HTML dashboard shows the same three percentiles. The Summary Report gives only average, min, max and standard deviation, so the listener you pick decides whether you see the tail at all.</li>
 <li><strong>Locust</strong> shows Median, 95%ile and 99%ile next to Average, Min and Max in its web UI, and prints a full percentile table from 50% to 100% at the end of a headless run.</li>
-<li><strong>Artillery</strong> reports min, max, mean, median, p95 and p99 for response times.</li>
-<li><strong>Vegeta</strong> reports min, mean, 50th, 90th, 95th, 99th and max latencies.</li>
-<li><strong>hey</strong> and <strong>ApacheBench</strong> both print a mean plus a latency distribution table running up to the 99th percentile.</li>
-<li><strong>wrk</strong> is the odd one out. By default it prints average, standard deviation and max; you only get percentiles by passing <code>--latency</code>.</li>
 </ul>
-<p>So in most tools the percentiles are already on the screen. The problem is rarely that the tool hid them. It&#39;s that the average is the number that gets copied into the ticket, the slide and the release sign-off.</p>
+<p>So in these tools the percentiles are already on the screen. The problem is rarely that the tool hid them. It&#39;s that the average is the number that gets copied into the ticket, the slide and the release sign-off.</p>
 <h2>Put the percentiles in the threshold, not just the report</h2>
 <p>A number in a summary only helps if someone reads it. A number in a threshold fails the build. Here&#39;s the same k6 script with <code>p(99)</code> added to the summary and three thresholds on <code>http_req_duration</code>: one on the average, one on p95 and one on p99.</p>
 <pre><code>export const options = {

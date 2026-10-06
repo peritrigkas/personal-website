@@ -156,12 +156,8 @@ Most load testing tools already agree with all of this, which you can tell from 
 - **Gatling** reports the 50th, 75th, 95th and 99th percentiles in its console summary and HTML report, alongside min, max, mean and standard deviation.
 - **JMeter** depends on the listener. The Aggregate Report gives Average, Median, 90% Line, 95% Line and 99% Line, and the HTML dashboard shows the same three percentiles. The Summary Report gives only average, min, max and standard deviation, so the listener you pick decides whether you see the tail at all.
 - **Locust** shows Median, 95%ile and 99%ile next to Average, Min and Max in its web UI, and prints a full percentile table from 50% to 100% at the end of a headless run.
-- **Artillery** reports min, max, mean, median, p95 and p99 for response times.
-- **Vegeta** reports min, mean, 50th, 90th, 95th, 99th and max latencies.
-- **hey** and **ApacheBench** both print a mean plus a latency distribution table running up to the 99th percentile.
-- **wrk** is the odd one out. By default it prints average, standard deviation and max; you only get percentiles by passing `--latency`.
 
-So in most tools the percentiles are already on the screen. The problem is rarely that the tool hid them. It's that the average is the number that gets copied into the ticket, the slide and the release sign-off.
+So in these tools the percentiles are already on the screen. The problem is rarely that the tool hid them. It's that the average is the number that gets copied into the ticket, the slide and the release sign-off.
 
 ## Put the percentiles in the threshold, not just the report
 
