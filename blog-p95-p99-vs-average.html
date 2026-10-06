@@ -15,16 +15,16 @@
 <meta property="og:title" content="The Average Is Hiding Your Slowest Users: Why p95 and p99 Belong in Performance Tests">
 <meta property="og:description" content="Two services, 100 requests each, the same 308ms average. One is healthy and one makes six users in every hundred wait seconds. What the average hides, what p95 and p99 show, and which load testing tools report percentiles out of the box.">
 <meta property="og:url" content="https://peritrigkas.netlify.app/blog-p95-p99-vs-average.html">
-<meta property="og:image" content="https://peritrigkas.netlify.app/img/og-default.png">
-<meta property="og:image:secure_url" content="https://peritrigkas.netlify.app/img/og-default.png">
+<meta property="og:image" content="https://peritrigkas.netlify.app/img/blog/p95-p99-vs-average/cover.png">
+<meta property="og:image:secure_url" content="https://peritrigkas.netlify.app/img/blog/p95-p99-vs-average/cover.png">
 <meta property="og:image:type" content="image/png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
+<meta property="og:image:width" content="1672">
+<meta property="og:image:height" content="941">
 <meta property="og:image:alt" content="The Average Is Hiding Your Slowest Users: Why p95 and p99 Belong in Performance Tests">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="The Average Is Hiding Your Slowest Users: Why p95 and p99 Belong in Performance Tests">
 <meta name="twitter:description" content="Two services, 100 requests each, the same 308ms average. One is healthy and one makes six users in every hundred wait seconds. What the average hides, what p95 and p99 show, and which load testing tools report percentiles out of the box.">
-<meta name="twitter:image" content="https://peritrigkas.netlify.app/img/og-default.png">
+<meta name="twitter:image" content="https://peritrigkas.netlify.app/img/blog/p95-p99-vs-average/cover.png">
 <meta name="twitter:image:alt" content="The Average Is Hiding Your Slowest Users: Why p95 and p99 Belong in Performance Tests">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -64,7 +64,7 @@
       <a class="share-btn" href="https://wa.me/?text=The%20Average%20Is%20Hiding%20Your%20Slowest%20Users%3A%20Why%20p95%20and%20p99%20Belong%20in%20Performance%20Tests%20%E2%80%94%20Field%20notes%20by%20Peri%20Trigkas%20https%3A%2F%2Fperitrigkas.netlify.app%2Fblog-p95-p99-vs-average.html" target="_blank" rel="noopener" aria-label="Share on WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm0 1.67c2.2 0 4.27.86 5.83 2.42a8.19 8.19 0 0 1 2.42 5.83c0 4.54-3.7 8.24-8.25 8.24a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.16 8.16 0 0 1-1.25-4.38c0-4.54 3.7-8.24 8.24-8.24zm4.52 10.35c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.24-.64.8-.78.97-.14.16-.29.18-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.24-1.47-1.38-1.72-.14-.25-.02-.38.11-.5.11-.11.25-.29.37-.43.13-.14.17-.24.25-.41.08-.16.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.42-.56-.42-.14 0-.31-.02-.47-.02-.16 0-.43.06-.65.31-.22.24-.86.84-.86 2.05 0 1.21.88 2.38 1 2.54.12.16 1.73 2.64 4.19 3.7.59.26 1.04.41 1.4.52.59.19 1.12.16 1.54.1.47-.07 1.47-.6 1.67-1.18.21-.58.21-1.08.14-1.18-.06-.11-.22-.17-.47-.29z"/></svg></a>
       <button type="button" class="share-btn share-copy" data-copy-url="https://peritrigkas.netlify.app/blog-p95-p99-vs-average.html" aria-label="Copy link"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 1H4a2 2 0 0 0-2 2v13h2V3h11V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h10v14z"/></svg></button>
     </div>
-    <div class="post-cover is-placeholder">[ Add cover image ]</div>
+    <div class="post-cover"><img src="img/blog/p95-p99-vs-average/cover.png" alt="The Average Is Hiding Your Slowest Users: Why p95 and p99 Belong in Performance Tests" loading="lazy"></div>
   </div>
 </article>
 
@@ -163,6 +163,7 @@ default ✓ [ 100% ] 5 VUs  00m06.3s/10m0s  100/100 shared iters
     http_reqs......................: 100    13.486674/s
 </code></pre>
 <p><strong>Average: 307.74ms.</strong> The steady service came in at 308.93ms. If the average is the only number on the report, these two services are the same, and the second one is even a millisecond better.</p>
+<p><img src="img/blog/p95-p99-vs-average/steady-vs-spiky.png" alt="The steady service keeps all 100 requests between 258ms and 359ms; the spiky service has the same average but six requests stretching from 1.4s to 5.2s"></p>
 <h2>Where the outliers went</h2>
 <p>Put the two runs side by side:</p>
 <ul>
@@ -236,6 +237,7 @@ default ✓ [ 100% ] 5 VUs  00m07.4s/10m0s  100/100 shared iters
 ERRO[0007] thresholds on metrics &#39;http_req_duration&#39; have been crossed
 </code></pre>
 <p>The average threshold passes with nearly 200ms to spare. The p95 threshold fails by almost a full second and p99 by more than three. k6 exits with code 99, the pipeline stage goes red, and the six slow requests are finally somebody&#39;s problem. A team gating only on <code>avg&lt;500</code> would have shipped this.</p>
+<p><img src="img/blog/p95-p99-vs-average/percentile-gates.png" alt="The average gate passes at 307.67ms, while the p95 gate fails at 1.43s and the p99 gate fails at 4.12s, blocking the release"></p>
 <h2>A few honest caveats</h2>
 <ul>
 <li><strong>p99 needs enough samples.</strong> With 100 requests, p99 is decided by the slowest one or two, so one unlucky request moves it a long way. That&#39;s fine for an illustration and not fine for a release gate. For a p99 you intend to trust, you want thousands of requests behind it.</li>
@@ -246,6 +248,7 @@ ERRO[0007] thresholds on metrics &#39;http_req_duration&#39; have been crossed
 </ul>
 <h2>Wrapping up</h2>
 <p>Two services, the same 308ms average. One answers every request in about a third of a second. The other is quicker for most people and makes six in every hundred wait up to five seconds. The average can&#39;t tell them apart, and p95 separates them in one line.</p>
+<p><img src="img/blog/p95-p99-vs-average/same-average.png" alt="Same average, different experience: avg 308.93ms and p95 356ms for the steady service against avg 307.74ms and p95 1.43s for the spiky one"></p>
 <p>Report the median so you know what typical looks like, report p95 and p99 so you know what the unlucky requests look like, and set your thresholds on the percentiles. The average can stay in the summary, as long as it isn&#39;t the number anyone signs off on.</p>
 
   </div>

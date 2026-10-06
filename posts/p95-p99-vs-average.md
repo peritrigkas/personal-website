@@ -2,6 +2,7 @@
 title: The Average Is Hiding Your Slowest Users: Why p95 and p99 Belong in Performance Tests
 excerpt: Two services, 100 requests each, the same 308ms average. One is healthy and one makes six users in every hundred wait seconds. What the average hides, what p95 and p99 show, and which load testing tools report percentiles out of the box.
 date: 2026-10-06
+image: img/blog/p95-p99-vs-average/cover.png
 ---
 
 "Average response time: 308ms" is the kind of line that ends a performance conversation. It sounds precise, it's under the target, everyone moves on. The trouble is that an average answers a question nobody using your service is asking. No user experiences the average. Each one experiences a single request, and some of those requests are a lot worse than the number on the dashboard.
@@ -118,6 +119,8 @@ Read the last row. Ninety-four requests finish in under 175ms, and then six of t
 
 **Average: 307.74ms.** The steady service came in at 308.93ms. If the average is the only number on the report, these two services are the same, and the second one is even a millisecond better.
 
+![The steady service keeps all 100 requests between 258ms and 359ms; the spiky service has the same average but six requests stretching from 1.4s to 5.2s](img/blog/p95-p99-vs-average/steady-vs-spiky.png)
+
 ## Where the outliers went
 
 Put the two runs side by side:
@@ -207,6 +210,8 @@ ERRO[0007] thresholds on metrics 'http_req_duration' have been crossed
 
 The average threshold passes with nearly 200ms to spare. The p95 threshold fails by almost a full second and p99 by more than three. k6 exits with code 99, the pipeline stage goes red, and the six slow requests are finally somebody's problem. A team gating only on `avg<500` would have shipped this.
 
+![The average gate passes at 307.67ms, while the p95 gate fails at 1.43s and the p99 gate fails at 4.12s, blocking the release](img/blog/p95-p99-vs-average/percentile-gates.png)
+
 ## A few honest caveats
 
 - **p99 needs enough samples.** With 100 requests, p99 is decided by the slowest one or two, so one unlucky request moves it a long way. That's fine for an illustration and not fine for a release gate. For a p99 you intend to trust, you want thousands of requests behind it.
@@ -218,5 +223,7 @@ The average threshold passes with nearly 200ms to spare. The p95 threshold fails
 ## Wrapping up
 
 Two services, the same 308ms average. One answers every request in about a third of a second. The other is quicker for most people and makes six in every hundred wait up to five seconds. The average can't tell them apart, and p95 separates them in one line.
+
+![Same average, different experience: avg 308.93ms and p95 356ms for the steady service against avg 307.74ms and p95 1.43s for the spiky one](img/blog/p95-p99-vs-average/same-average.png)
 
 Report the median so you know what typical looks like, report p95 and p99 so you know what the unlucky requests look like, and set your thresholds on the percentiles. The average can stay in the summary, as long as it isn't the number anyone signs off on.
