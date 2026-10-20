@@ -2,6 +2,7 @@
 title: From Green Builds to a Yes: Quality Metrics for the Head of QA and the CTO
 excerpt: Sooner or later an SDET has to prove something with numbers, either that an initiative is worth the effort or that quality is genuinely where it should be. Which metrics matter, how tagging pipelines and tests turns the tools you already have into the dashboard, and why the Head of QA and the CTO need two different reports built from the same data.
 date: 2026-10-20
+image: img/blog/quality-metrics-for-cto-and-head-of-qa/cover.png
 ---
 
 Sooner or later every SDET ends up in one of two conversations. In the first, you want time, money or people for something: fixing the flaky suite, rolling out contract testing, building a proper performance stage. In the second, someone asks whether quality is actually good, and "it feels fine" isn't an answer anyone can act on.
@@ -131,6 +132,8 @@ The real value is **risk reduction**: fewer customer-facing breakages, a lower c
 | Who decides | Usually the Head of QA | The CTO, because it costs dev capacity |
 | Biggest risk in the pitch | Underselling the trust problem | Overselling with a precise ROI |
 
+![Two business cases side by side: the flaky suite fix is an efficiency case (150 runs a week, 12% flaky, 9 hours a week lost, payback in about a month) argued with arithmetic; contract testing is a risk-reduction case (5 incidents in 6 months, 2 hitting checkout, 10 to 15 days of setup, a 6-week pilot) argued with ranges and uncertainty](img/blog/quality-metrics-for-cto-and-head-of-qa/efficiency-vs-risk.png)
+
 The general lesson: **efficiency cases want arithmetic, risk cases want honesty about uncertainty.** Forcing a risk case into ROI form is how SDETs lose credibility, because the first person who checks the maths will find the assumptions doing all the work.
 
 Two rules apply to both:
@@ -224,6 +227,8 @@ with caught breaking changes and incident data.
 No test names, no flaky leaderboard, no suite duration. All of that sits behind the numbers, and the CTO can ask for it. What they get is a direction, a cost and a clear question.
 
 In a startup the CTO might well ask for the detail, and that's fine; have the dashboard ready. But lead with the summary. Being close to the CTO means you get their attention easily, not that you should spend it on detail.
+
+![One trusted data set from CI history, test results, deployments, incidents and the issue tracker feeds two dashboards: the Head of QA view shows defect containment, flaky rate, PR feedback time, critical journeys and risks with owners; the CTO view shows DORA trends, Sev1 and Sev2 defects, SLO status, cost of quality and one clear ask](img/blog/quality-metrics-for-cto-and-head-of-qa/two-dashboards.png)
 
 ## Building the data and the dashboard
 
