@@ -237,15 +237,15 @@
 <p>A note in this style is enough:</p>
 <pre><code>QA update, sprint 42
 
-Headline: flaky rate down to 3.1% (from 7.4%); one escaped defect.
+Headline: flaky rate down to 2.1% (from 4.0%); one escaped defect.
 
 Escaped:   1 (Sev3, discount code rounding). Root cause: no test for
            currency edge cases. Test added; 4 similar cases being reviewed.
 Caught:    23 defects pre-prod (PR 17, nightly 4, staging 2).
 Flaky:     top offender is checkout_payment_timeout, quarantined,
            fix in progress with the payments team.
-Pipeline:  PR feedback p95 11m (target 10m). Nightly up 4m since
-           the search suite was added.
+Pipeline:  PR feedback p95 18m, down 55% from 40m (target 15m).
+           Nightly up 4m since the search suite was added.
 Coverage:  7 of 9 critical journeys automated. Refunds and account
            deletion still manual.
 Risk:      account deletion is untested before release and touches
@@ -272,15 +272,17 @@ Bottom line: shipping more often with fewer failures. One decision needed.
 
 Deploys/week        12 → 19      Lead time        2.1d → 1.3d
 Change failure      15% → 8%     Time to restore  3.5h → 1.2h
-Escaped Sev1/Sev2   4 → 1        Checkout SLO     99.6% (target 99.5%)
+Escaped Sev1/Sev2   3 → 1        Checkout SLO     98.7% (target 98.5%)
+Cost of quality     down 42%, mostly fewer reruns and manual regression
 
 Flaky test fix: ~4 person-days/month of reruns given back to the team.
 Remaining risk: integration changes between services caused 5 incidents
 in 6 months, 2 on checkout.
 
-Decision: approve a 6-week contract testing pilot on the orders ↔
-payments integration (~12 dev days + SDET time). We&#39;ll report back
-with caught breaking changes and incident data.
+Decision: approve a test infrastructure investment, a 6-week contract
+testing pilot on the orders ↔ payments integration (~12 dev days +
+SDET time). We&#39;ll report back with caught breaking changes and
+incident data.
 </code></pre>
 <p>No test names, no flaky leaderboard, no suite duration. All of that sits behind the numbers, and the CTO can ask for it. What they get is a direction, a cost and a clear question.</p>
 <p>In a startup the CTO might well ask for the detail, and that&#39;s fine; have the dashboard ready. But lead with the summary. Being close to the CTO means you get their attention easily, not that you should spend it on detail.</p>
