@@ -93,7 +93,7 @@
 <p>There are hundreds of things you could count. At a startup, you want a small set that covers four layers, from what customers feel down to what the team spends.</p>
 <p><strong>1. Outcomes: what customers actually experience</strong></p>
 <ul>
-<li><strong>Escaped defects</strong>, meaning bugs found in production, broken down by severity. The single most honest quality number.</li>
+<li><strong>Escaped defects</strong>, meaning bugs found in production, broken down by severity. The single most honest quality number. Most teams use a numbered severity scale where lower means worse: <strong>Sev1</strong> is critical (a core service down, data lost or exposed, money directly affected), <strong>Sev2</strong> is major (an important feature broken, but with a workaround or only some users hit), and <strong>Sev3</strong> and below are minor or cosmetic. The exact definitions vary between companies.</li>
 <li><strong>Change failure rate</strong>: the percentage of deployments that cause an incident, a rollback or a hotfix.</li>
 <li><strong>Time to restore</strong>: how long it takes to recover when something does break.</li>
 <li><strong>SLOs and error budgets</strong> for the journeys that make money: sign-up, login, checkout. Latency belongs here too, as p95 and p99 rather than the average (I covered why in <a href="blog-p95-p99-vs-average.html">the percentiles post</a>).</li>
