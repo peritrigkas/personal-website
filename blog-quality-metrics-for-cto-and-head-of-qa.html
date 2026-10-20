@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>From Green Builds to a Yes: Quality Metrics for the Head of QA and the CTO — Peri Trigkas</title>
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+<link rel="apple-touch-icon" href="icon.png">
+<link rel="manifest" href="site.webmanifest">
+<link rel="canonical" href="https://peritrigkas.netlify.app/blog-quality-metrics-for-cto-and-head-of-qa.html">
+<meta name="description" content="Sooner or later an SDET has to prove something with numbers, either that an initiative is worth the effort or that quality is genuinely where it should be. Which metrics matter, how tagging pipelines and tests turns the tools you already have into the dashboard, and why the Head of QA and the CTO need two different reports built from the same data.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Peri Trigkas">
+<meta property="og:title" content="From Green Builds to a Yes: Quality Metrics for the Head of QA and the CTO">
+<meta property="og:description" content="Sooner or later an SDET has to prove something with numbers, either that an initiative is worth the effort or that quality is genuinely where it should be. Which metrics matter, how tagging pipelines and tests turns the tools you already have into the dashboard, and why the Head of QA and the CTO need two different reports built from the same data.">
+<meta property="og:url" content="https://peritrigkas.netlify.app/blog-quality-metrics-for-cto-and-head-of-qa.html">
+<meta property="og:image" content="https://peritrigkas.netlify.app/img/blog/quality-metrics-for-cto-and-head-of-qa/cover.png">
+<meta property="og:image:secure_url" content="https://peritrigkas.netlify.app/img/blog/quality-metrics-for-cto-and-head-of-qa/cover.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1672">
+<meta property="og:image:height" content="941">
+<meta property="og:image:alt" content="From Green Builds to a Yes: Quality Metrics for the Head of QA and the CTO">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="From Green Builds to a Yes: Quality Metrics for the Head of QA and the CTO">
+<meta name="twitter:description" content="Sooner or later an SDET has to prove something with numbers, either that an initiative is worth the effort or that quality is genuinely where it should be. Which metrics matter, how tagging pipelines and tests turns the tools you already have into the dashboard, and why the Head of QA and the CTO need two different reports built from the same data.">
+<meta name="twitter:image" content="https://peritrigkas.netlify.app/img/blog/quality-metrics-for-cto-and-head-of-qa/cover.png">
+<meta name="twitter:image:alt" content="From Green Builds to a Yes: Quality Metrics for the Head of QA and the CTO">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a href="index.html#top" class="brand"><span class="dot"></span> Peri Trigkas</a>
+    <ul class="navlinks" id="navlinks">
+      <li><a href="index.html#journey">Journey</a></li>
+      <li><a href="index.html#skills">Skills</a></li>
+      <li><a href="index.html#experience">Experience</a></li>
+      <li><a href="index.html#blog">Field notes</a></li>
+      <li><a href="index.html#books">Books</a></li>
+      <li><a href="index.html#hobbies">Beyond Work</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+    </ul>
+    <button class="burger" id="burgerBtn" aria-label="Open menu" aria-expanded="false" aria-controls="navlinks">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<article class="post-hero">
+  <div class="wrap">
+    <a class="back-link mono" href="index.html#blog">&larr; Back to Field notes</a>
+    <h1>From Green Builds to a Yes: Quality Metrics for the Head of QA and the CTO</h1>
+    <span class="post-date mono">20 Oct 2026</span>
+    <div class="post-share">
+      <span class="share-label mono">Share</span>
+      <a class="share-btn" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fperitrigkas.netlify.app%2Fblog-quality-metrics-for-cto-and-head-of-qa.html" target="_blank" rel="noopener" aria-label="Share on LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.07 2.07 0 1 1 0-4.13 2.07 2.07 0 0 1 0 4.13zM7.12 20.45H3.55V9h3.57v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"/></svg></a>
+      <a class="share-btn" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fperitrigkas.netlify.app%2Fblog-quality-metrics-for-cto-and-head-of-qa.html&amp;text=From%20Green%20Builds%20to%20a%20Yes%3A%20Quality%20Metrics%20for%20the%20Head%20of%20QA%20and%20the%20CTO%20%E2%80%94%20Field%20notes%20by%20Peri%20Trigkas" target="_blank" rel="noopener" aria-label="Share on X"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.24 2.25h3.31l-7.23 8.26 8.5 11.24h-6.66l-5.21-6.82-5.97 6.82H1.68l7.73-8.84L1.25 2.25h6.83l4.71 6.23 5.45-6.23zm-1.16 17.52h1.83L7.01 4.13H5.05l12.03 15.64z"/></svg></a>
+      <a class="share-btn" href="mailto:?subject=From%20Green%20Builds%20to%20a%20Yes%3A%20Quality%20Metrics%20for%20the%20Head%20of%20QA%20and%20the%20CTO&amp;body=From%20Green%20Builds%20to%20a%20Yes%3A%20Quality%20Metrics%20for%20the%20Head%20of%20QA%20and%20the%20CTO%20%E2%80%94%20Field%20notes%20by%20Peri%20Trigkas%0A%0Ahttps%3A%2F%2Fperitrigkas.netlify.app%2Fblog-quality-metrics-for-cto-and-head-of-qa.html" aria-label="Share by email"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 4h20a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1zm10 7.13L3.5 6H20.5L12 11.13zM3 8.24V18h18V8.24l-9 5.4-9-5.4z"/></svg></a>
+      <a class="share-btn" href="https://wa.me/?text=From%20Green%20Builds%20to%20a%20Yes%3A%20Quality%20Metrics%20for%20the%20Head%20of%20QA%20and%20the%20CTO%20%E2%80%94%20Field%20notes%20by%20Peri%20Trigkas%20https%3A%2F%2Fperitrigkas.netlify.app%2Fblog-quality-metrics-for-cto-and-head-of-qa.html" target="_blank" rel="noopener" aria-label="Share on WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm0 1.67c2.2 0 4.27.86 5.83 2.42a8.19 8.19 0 0 1 2.42 5.83c0 4.54-3.7 8.24-8.25 8.24a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.16 8.16 0 0 1-1.25-4.38c0-4.54 3.7-8.24 8.24-8.24zm4.52 10.35c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.24-.64.8-.78.97-.14.16-.29.18-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.24-1.47-1.38-1.72-.14-.25-.02-.38.11-.5.11-.11.25-.29.37-.43.13-.14.17-.24.25-.41.08-.16.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.42-.56-.42-.14 0-.31-.02-.47-.02-.16 0-.43.06-.65.31-.22.24-.86.84-.86 2.05 0 1.21.88 2.38 1 2.54.12.16 1.73 2.64 4.19 3.7.59.26 1.04.41 1.4.52.59.19 1.12.16 1.54.1.47-.07 1.47-.6 1.67-1.18.21-.58.21-1.08.14-1.18-.06-.11-.22-.17-.47-.29z"/></svg></a>
+      <button type="button" class="share-btn share-copy" data-copy-url="https://peritrigkas.netlify.app/blog-quality-metrics-for-cto-and-head-of-qa.html" aria-label="Copy link"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 1H4a2 2 0 0 0-2 2v13h2V3h11V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h10v14z"/></svg></button>
+    </div>
+    <div class="post-cover"><img src="img/blog/quality-metrics-for-cto-and-head-of-qa/cover.png" alt="From Green Builds to a Yes: Quality Metrics for the Head of QA and the CTO" loading="lazy"></div>
+  </div>
+</article>
+
+<div class="wrap">
+  <div class="post-body">
+<p>Sooner or later every SDET ends up in one of two conversations. In the first, you want time, money or people for something: fixing the flaky suite, rolling out contract testing, building a proper performance stage. In the second, someone asks whether quality is actually good, and &quot;it feels fine&quot; isn&#39;t an answer anyone can act on.</p>
+<p>Both are arguments, and metrics are the evidence. Without them you&#39;re trading opinions, and in a disagreement between the SDET&#39;s opinion and the roadmap, the roadmap usually wins. With them, you can make a case that holds up when someone more senior pokes at it.</p>
+<p>This post works through a scenario. It&#39;s hypothetical, and every number in it is illustrative rather than taken from a real company, but the structure is one that plenty of people will recognise:</p>
+<ul>
+<li><strong>A startup</strong> of a few dozen people, with one product, a handful of services and one or two delivery teams.</li>
+<li><strong>The SDET reports to the Head of QA</strong>, who owns the quality strategy and the QA team.</li>
+<li><strong>The CTO is close.</strong> There aren&#39;t five layers of management in between. The CTO probably reviews pull requests now and then, and could open your dashboard if they felt like it.</li>
+</ul>
+<p>Being close to the CTO is an advantage. It&#39;s also a trap, because it tempts you to show the CTO the same thing you&#39;d show the Head of QA. They&#39;re asking different questions, so they need different reports.</p>
+<h2>Why measure quality at all</h2>
+<p>Quality has an awkward property: when it&#39;s working, nothing happens. No incident, no angry customer, no rollback. Nobody gets credit for a Tuesday when nothing broke, and from the outside a good test strategy looks the same as no test strategy, right up to the day it doesn&#39;t.</p>
+<p>Metrics make the invisible part visible:</p>
+<ul>
+<li><strong>They turn &quot;nothing happened&quot; into evidence.</strong> &quot;No Sev1s this quarter&quot; is a sentence. &quot;The pipeline blocked 14 changes this quarter, and here are the three that would have broken checkout&quot; is a story with proof behind it.</li>
+<li><strong>They show trends before they become incidents.</strong> A suite that takes two minutes longer every month or a flaky rate that creeps up never trigger an alert on any given day. On a chart they&#39;re obvious.</li>
+<li><strong>They settle arguments.</strong> &quot;Testing slows us down&quot; and &quot;we need more testing&quot; can both be true or false. Lead time, change failure rate and where defects get caught tell you which.</li>
+<li><strong>They show whether your own work paid off.</strong> If you can&#39;t show that an initiative changed anything, you can&#39;t be sure it did.</li>
+</ul>
+<p>One warning applies to the whole topic. <strong>Goodhart&#39;s law</strong>: when a measure becomes a target, it stops being a good measure. Put a team&#39;s bonus on the test count and you&#39;ll get more tests, not better ones. Put it on bugs logged and you&#39;ll get a lot of one-line tickets. Use metrics to understand the system, not to grade people, and say so out loud when you introduce them.</p>
+<h2>The metrics worth tracking</h2>
+<p>There are hundreds of things you could count. At a startup, you want a small set that covers four layers, from what customers feel down to what the team spends.</p>
+<p><strong>1. Outcomes: what customers actually experience</strong></p>
+<ul>
+<li><strong>Escaped defects</strong>, meaning bugs found in production, broken down by severity. The single most honest quality number. Most teams use a numbered severity scale where lower means worse: <strong>Sev1</strong> is critical (a core service down, data lost or exposed, money directly affected), <strong>Sev2</strong> is major (an important feature broken, but with a workaround or only some users hit), and <strong>Sev3</strong> and below are minor or cosmetic. The exact definitions vary between companies.</li>
+<li><strong>Change failure rate</strong>: the percentage of deployments that cause an incident, a rollback or a hotfix.</li>
+<li><strong>Time to restore</strong>: how long it takes to recover when something does break.</li>
+<li><strong>SLOs and error budgets</strong> for the journeys that make money: sign-up, login, checkout. Latency belongs here too, as p95 and p99 rather than the average (I covered why in <a href="blog-p95-p99-vs-average.html">the percentiles post</a>).</li>
+</ul>
+<p><strong>2. Delivery flow: how fast change gets to users safely</strong></p>
+<ul>
+<li><strong>The DORA metrics.</strong> DORA (DevOps Research and Assessment) is the research programme behind the yearly <em>State of DevOps</em> reports and the book <em>Accelerate</em>. It found that four measures reliably separate strong delivery teams from weak ones. Two measure speed: <strong>deployment frequency</strong> (how often you release to production) and <strong>lead time for changes</strong> (how long a commit takes to reach production). Two measure stability: <strong>change failure rate</strong> (the share of deployments that cause a failure) and <strong>time to restore</strong> (how long recovery takes when something breaks). They pull against each other, which makes them hard to game: shipping recklessly improves speed and wrecks stability, and freezing releases does the opposite. Most CTOs already know them.</li>
+<li><strong>PR feedback time</strong>: how long from push to a green or red pipeline. This is the number developers feel every day.</li>
+</ul>
+<p><strong>3. Test health: the leading indicators</strong></p>
+<ul>
+<li><strong>Defect containment</strong>: of all the defects found, what share were caught before production, and at which stage (PR, nightly, staging, production). This tells you whether your layers are catching things where they&#39;re cheapest to fix.</li>
+<li><strong>Flaky rate</strong>: how often a test fails and then passes on the same commit with no code change.</li>
+<li><strong>Suite duration</strong> and its trend.</li>
+<li><strong>Critical journey coverage</strong>: which of the business-critical user journeys have automated checks and which still rely on someone clicking through them. This is far more useful than line coverage.</li>
+<li><strong>Mutation score</strong> on core modules, if you want to know whether the tests would actually notice a bug (<a href="blog-mutation-testing.html">more on that here</a>).</li>
+</ul>
+<p><strong>4. Cost: what quality is costing in time and money</strong></p>
+<ul>
+<li><strong>Manual regression hours</strong> per release.</li>
+<li><strong>Time lost to flaky reruns</strong> and to investigating failures that turned out to be noise.</li>
+<li><strong>CI spend</strong>, in minutes or money.</li>
+<li><strong>Incident cost</strong>: engineer hours spent firefighting, plus whatever the business lost while things were broken.</li>
+</ul>
+<p>And a few to keep off the slides, or at least never show on their own: <strong>raw test count</strong>, <strong>number of bugs logged</strong>, <strong>line coverage percentage</strong> and <strong>pass rate</strong> without context. They&#39;re easy to collect, easy to inflate and say very little about whether users are safe.</p>
+<h2>Two jobs, two shapes of evidence</h2>
+<p>The two conversations from the start need different evidence.</p>
+<p><strong>Proving an initiative is worth it</strong> is a business case. It&#39;s about the future, and it needs a baseline, a cost, an expected benefit and a way to tell afterwards whether it worked.</p>
+<p><strong>Proving quality is high</strong> is an assurance report. It&#39;s about the present and the recent past, and it needs trends, context against targets and honesty about the bad bits.</p>
+<p>Mixing them up is a common mistake. A health report padded with a pitch reads like spin. A pitch made of health metrics leaves the listener asking &quot;so what do you want?&quot;</p>
+<h2>Making the case: flaky tests versus contract testing</h2>
+<p>To show how different two business cases can be, take two initiatives the SDET might want to pitch at our hypothetical startup. Both are reasonable, and both cost a couple of weeks of effort. They need very different arguments.</p>
+<h3>Case A: fixing the flaky suite</h3>
+<p>The problem: the PR pipeline fails intermittently, people have learned to hit rerun, and nobody trusts a red build any more.</p>
+<p>The evidence for this one is already sitting in your CI history. Illustrative numbers:</p>
+<ul>
+<li>Around <strong>150 pipeline runs a week</strong> across eight engineers.</li>
+<li><strong>12% of runs fail on a test that then passes on rerun</strong>: about 18 flaky failures a week.</li>
+<li>Each one costs an engineer roughly <strong>30 minutes</strong>: reading the log, deciding it&#39;s &quot;probably flaky&quot;, rerunning, getting back into what they were doing.</li>
+<li>That&#39;s about <strong>9 hours a week</strong>, a little over a person-day a week, or <strong>4 to 5 person-days a month</strong>, before counting merges held up by the wait.</li>
+</ul>
+<p>The proposal: about <strong>5 days of SDET time</strong> to switch on flaky detection, quarantine the worst offenders and fix the top ten, plus about <strong>half a day a month</strong> to keep it under control.</p>
+<p>The maths is direct: the effort pays for itself in roughly a month, and keeps paying after that. There&#39;s also a cost that doesn&#39;t fit neatly into hours. Once a team expects red builds to be noise, a real failure gets rerun until it&#39;s green too. Even if nobody can put a number on that risk, it&#39;s worth naming.</p>
+<p>What makes this case strong:</p>
+<ul>
+<li><strong>The data already exists.</strong> You&#39;re not forecasting, you&#39;re describing what is happening now.</li>
+<li><strong>It&#39;s measurable straight away.</strong> Flaky rate and reruns per week drop within a sprint or two if the work is effective.</li>
+<li><strong>It&#39;s mostly inside QA&#39;s own remit.</strong> The Head of QA can usually approve it from existing capacity, so it might not need to reach the CTO as a request at all, only as a result.</li>
+</ul>
+<h3>Case B: rolling out contract testing</h3>
+<p>The problem: services talk to each other through APIs that change, and some of those changes have broken production. I&#39;ve written before about how <a href="blog-mock-vs-real-tradeoff.html">mocks drift away from the real service</a>; contract testing is the usual fix.</p>
+<p>The evidence here comes from incident history, and it&#39;s thinner. Illustrative numbers:</p>
+<ul>
+<li>In the last six months, <strong>5 incidents</strong> traced back to one service changing a response the other relied on: a renamed field, a new enum value, a changed rule behind a 200.</li>
+<li>Each took about <strong>3 hours to restore</strong> and roughly <strong>two engineer-days</strong> to investigate, fix and write up. That&#39;s about 10 person-days over six months, or under 2 a month.</li>
+<li>Two of the five hit checkout, so there&#39;s lost revenue and support load as well, which is harder to price.</li>
+</ul>
+<p>The proposal: about <strong>10 to 15 days</strong> to set up a contract broker, write contracts for the three integrations that change most often and wire provider verification into both pipelines, plus <strong>1 to 2 days a month</strong> of upkeep, much of it from the developers who own the services.</p>
+<p>On engineer hours alone, this doesn&#39;t obviously pay back. It might take most of a year, and that&#39;s if it prevents every one of those incidents, which it won&#39;t. If you present it as an ROI calculation, you&#39;ll lose the argument, and you&#39;ll deserve to.</p>
+<p>The real value is <strong>risk reduction</strong>: fewer customer-facing breakages, a lower change failure rate and the freedom for teams to change their services without fear. So the pitch has a different shape:</p>
+<ul>
+<li><strong>Frame it as insurance, with ranges, not a single number.</strong> &quot;Integration changes caused 5 incidents in 6 months, 2 of them on checkout. We expect contract testing to catch most of this class, not all of it.&quot;</li>
+<li><strong>Propose a pilot.</strong> One integration, six weeks. Much easier to approve than a platform, and it gives you real data for the next decision.</li>
+<li><strong>Agree the leading indicator up front.</strong> Count breaking changes caught by provider verification before merge. Not every one would have become an incident, so be careful how you present it, but it&#39;s the earliest signal that the investment is doing something.</li>
+<li><strong>Agree the lagging indicator too.</strong> Escaped integration defects and change failure rate over the following quarters. This is the result that proves the case, and it takes months.</li>
+<li><strong>Name the cross-team cost.</strong> Developers have to write and maintain contracts. That&#39;s a cost in delivery capacity, which makes it the CTO&#39;s decision, not QA&#39;s alone.</li>
+</ul>
+<h3>What&#39;s actually different</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Case A: flaky tests</th>
+<th>Case B: contract testing</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Type of value</td>
+<td>Efficiency: time given back</td>
+<td>Risk reduction: incidents avoided</td>
+</tr>
+<tr>
+<td>Where the evidence lives</td>
+<td>CI history</td>
+<td>Incident and bug history</td>
+</tr>
+<tr>
+<td>Confidence</td>
+<td>High, it&#39;s measured now</td>
+<td>Lower, it&#39;s partly counterfactual</td>
+</tr>
+<tr>
+<td>Time to show results</td>
+<td>Weeks</td>
+<td>Months to quarters</td>
+</tr>
+<tr>
+<td>How to present it</td>
+<td>Straight cost vs payback</td>
+<td>Range of risk, plus a pilot</td>
+</tr>
+<tr>
+<td>Who decides</td>
+<td>Usually the Head of QA</td>
+<td>The CTO, because it costs dev capacity</td>
+</tr>
+<tr>
+<td>Biggest risk in the pitch</td>
+<td>Underselling the trust problem</td>
+<td>Overselling with a precise ROI</td>
+</tr>
+</tbody></table>
+<p><img src="img/blog/quality-metrics-for-cto-and-head-of-qa/efficiency-vs-risk.png" alt="Two business cases side by side: the flaky suite fix is an efficiency case (150 runs a week, 12% flaky, 9 hours a week lost, payback in about a month) argued with arithmetic; contract testing is a risk-reduction case (5 incidents in 6 months, 2 hitting checkout, 10 to 15 days of setup, a 6-week pilot) argued with ranges and uncertainty"></p>
+<p>The general lesson: <strong>efficiency cases want arithmetic, risk cases want honesty about uncertainty.</strong> Forcing a risk case into ROI form is how SDETs lose credibility, because the first person who checks the maths will find the assumptions doing all the work.</p>
+<p>Two rules apply to both:</p>
+<ul>
+<li><strong>Measure the baseline before you change anything.</strong> If you start fixing flaky tests before recording the flaky rate, you&#39;ll never be able to show the improvement.</li>
+<li><strong>Write down what success looks like, and when you&#39;ll check.</strong> &quot;Flaky rate under 2% within six weeks&quot; or &quot;zero escaped defects on the piloted integration this quarter&quot;. It makes the follow-up conversation easy, and it shows you&#39;re not asking for a blank cheque.</li>
+</ul>
+<h2>Proving quality is high</h2>
+<p>The assurance report has a different problem: it&#39;s easy to make look good and hard to make believable. A few things make it credible:</p>
+<ul>
+<li><strong>Trends over snapshots.</strong> &quot;Change failure rate 8%&quot; means nothing alone. &quot;Down from 15% to 8% over two quarters, against a target of 10%&quot; means something.</li>
+<li><strong>Show what the safety net caught.</strong> Defect containment by stage is the closest thing to evidence for the incidents that didn&#39;t happen. &quot;92% of defects this quarter were caught before production, most of them at PR stage&quot; says the layers are working.</li>
+<li><strong>Bring the bad news yourself.</strong> If there was a Sev1, it goes in the report, with root cause and what changed afterwards. A report that&#39;s all green is a report people stop believing.</li>
+<li><strong>Tie it to targets someone agreed to.</strong> An SLO the CTO signed off on is a much stronger reference point than a threshold QA picked alone.</li>
+</ul>
+<h2>What to show the Head of QA</h2>
+<p>The Head of QA owns <em>how</em> quality is achieved. They want depth, leading indicators and enough detail to decide where the team&#39;s effort goes next. They also need to be able to defend QA&#39;s work upward, so part of your job is giving them material they can reuse.</p>
+<p><strong>Cadence:</strong> weekly or per sprint, as part of a 1:1 or a short QA sync.
+<strong>Format:</strong> the live dashboard, plus a short written note on what changed and why.</p>
+<p>What goes in:</p>
+<ul>
+<li><strong>Defect containment by stage</strong>, and any defects that escaped, each with a root cause category: missing test, environment gap, requirement gap, data issue.</li>
+<li><strong>Flaky rate</strong>, with the ten worst tests by name and who&#39;s looking at them.</li>
+<li><strong>Suite duration and PR feedback time</strong> trends.</li>
+<li><strong>Critical journey coverage</strong>: what&#39;s automated, what&#39;s manual, what&#39;s not covered at all.</li>
+<li><strong>Progress on current initiatives</strong> against the success criteria you agreed.</li>
+<li><strong>Risks and asks</strong>: anything you&#39;re worried about, anything you need.</li>
+</ul>
+<p>A note in this style is enough:</p>
+<pre><code>QA update, sprint 42
+
+Headline: flaky rate down to 2.1% (from 4.0%); one escaped defect.
+
+Escaped:   1 (Sev3, discount code rounding). Root cause: no test for
+           currency edge cases. Test added; 4 similar cases being reviewed.
+Caught:    23 defects pre-prod (PR 17, nightly 4, staging 2).
+Flaky:     top offender is checkout_payment_timeout, quarantined,
+           fix in progress with the payments team.
+Pipeline:  PR feedback p95 18m, down 55% from 40m (target 15m).
+           Nightly up 4m since the search suite was added.
+Coverage:  7 of 9 critical journeys automated. Refunds and account
+           deletion still manual.
+Risk:      account deletion is untested before release and touches
+           personal data. Proposing to automate next sprint.
+</code></pre>
+<p>Notice that it&#39;s detailed, and that every number has a comparison or a next step attached. The Head of QA can act on every line.</p>
+<h2>What to show the CTO</h2>
+<p>The CTO owns delivery, cost and risk for the whole engineering organisation. They&#39;re asking: are we shipping fast enough, are we breaking things, what&#39;s it costing, and is there a decision I need to make?</p>
+<p><strong>Cadence:</strong> monthly or quarterly, plus whenever there&#39;s a decision to make.
+<strong>Format:</strong> one page, or three slides at most. Five minutes, with the dashboard link for anyone who wants to dig in.</p>
+<p>What goes in:</p>
+<ul>
+<li><strong>The four DORA metrics</strong>, as trends.</li>
+<li><strong>Escaped Sev1 and Sev2 defects</strong>, as a trend, with one line on each.</li>
+<li><strong>SLO status</strong> for the money journeys.</li>
+<li><strong>Cost of quality</strong> in hours or money: manual regression time, time lost to reruns, incident time.</li>
+<li><strong>One headline per initiative</strong>: what it was meant to do and whether it&#39;s doing it.</li>
+<li><strong>The ask</strong>, if there is one, stated as a decision.</li>
+</ul>
+<p>Something like:</p>
+<pre><code>Quality &amp; delivery, Q3
+
+Bottom line: shipping more often with fewer failures. One decision needed.
+
+Deploys/week        12 → 19      Lead time        2.1d → 1.3d
+Change failure      15% → 8%     Time to restore  3.5h → 1.2h
+Escaped Sev1/Sev2   3 → 1        Checkout SLO     98.7% (target 98.5%)
+Cost of quality     down 42%, mostly fewer reruns and manual regression
+
+Flaky test fix: ~4 person-days/month of reruns given back to the team.
+Remaining risk: integration changes between services caused 5 incidents
+in 6 months, 2 on checkout.
+
+Decision: approve a test infrastructure investment, a 6-week contract
+testing pilot on the orders ↔ payments integration (~12 dev days +
+SDET time). We&#39;ll report back with caught breaking changes and
+incident data.
+</code></pre>
+<p>No test names, no flaky leaderboard, no suite duration. All of that sits behind the numbers, and the CTO can ask for it. What they get is a direction, a cost and a clear question.</p>
+<p>In a startup the CTO might well ask for the detail, and that&#39;s fine; have the dashboard ready. But lead with the summary. Being close to the CTO means you get their attention easily, not that you should spend it on detail.</p>
+<p><img src="img/blog/quality-metrics-for-cto-and-head-of-qa/two-dashboards.png" alt="One trusted data set from CI history, test results, deployments, incidents and the issue tracker feeds two dashboards: the Head of QA view shows defect containment, flaky rate, PR feedback time, critical journeys and risks with owners; the CTO view shows DORA trends, Sev1 and Sev2 defects, SLO status, cost of quality and one clear ask"></p>
+<h2>Building the data and the dashboard</h2>
+<p>You don&#39;t need a metrics database, a data pipeline or a dedicated quality platform. If you&#39;re already on an observability tool like Datadog, most of this is a tagging problem, not a storage problem. Send pipeline and test results there with consistent tags, and the dashboards are a few widgets and filters on top.</p>
+<p><strong>Pipelines.</strong> Datadog&#39;s <strong>CI Visibility</strong> connects to GitHub Actions, GitLab, Jenkins and the other common CI providers and records every pipeline, stage and job: duration, status, retries, branch and commit. That covers PR feedback time, pipeline duration trends and how often main goes red, with nothing to build.</p>
+<p><strong>Tests.</strong> <strong>Test Optimization</strong> (previously Test Visibility) records every test run. You can instrument the framework with the Datadog library for your language, or send the <strong>JUnit XML</strong> that almost every framework already produces with the <code>datadog-ci</code> CLI. It also detects flaky tests on its own: a test that both passes and fails on the same commit gets flagged, so you don&#39;t have to work that out yourself.</p>
+<p><strong>Tags are what make it useful.</strong> Raw test results answer &quot;what failed&quot;. Tags answer &quot;what failed, for which team, on which user journey, at which layer and at which stage&quot;. A small, agreed set is enough:</p>
+<ul>
+<li><code>team</code>: who owns it (<code>team:checkout</code>, <code>team:platform</code>)</li>
+<li><code>service</code>: what it tests</li>
+<li><code>journey</code>: the business-critical flow it protects (<code>journey:signup</code>, <code>journey:checkout</code>, <code>journey:refunds</code>)</li>
+<li><code>layer</code>: <code>unit</code>, <code>component</code>, <code>contract</code>, <code>e2e</code>, <code>performance</code></li>
+<li><code>stage</code>: where it ran (<code>pr</code>, <code>nightly</code>, <code>staging</code>, <code>post-deploy</code>)</li>
+</ul>
+<p>With the JUnit route, tagging is one step in the pipeline:</p>
+<pre><code class="language-yaml">- name: Upload test results to Datadog
+  if: always()
+  env:
+    DATADOG_API_KEY: ${{ secrets.DATADOG_API_KEY }}
+  run: |
+    npx @datadog/datadog-ci junit upload \
+      --service checkout-api \
+      --tags team:checkout \
+      --tags journey:checkout \
+      --tags layer:e2e \
+      --tags stage:pr \
+      reports/junit/
+</code></pre>
+<p>The <code>if: always()</code> matters: you want the results uploaded when tests fail, because failing runs are where most of the useful data is.</p>
+<p>Once the tags are consistent, most of the Head of QA view is just filters and groupings:</p>
+<ul>
+<li><strong>Flaky tests by team</strong>, with the top ten by name.</li>
+<li><strong>Failures grouped by <code>stage</code></strong>, which shows where problems are being caught. That&#39;s the pre-production half of defect containment.</li>
+<li><strong>Tests grouped by <code>journey</code></strong>, showing which critical journeys have automated coverage at all and whether they&#39;re passing. A journey with no tagged tests is a gap you can see on the dashboard.</li>
+<li><strong>Duration by <code>layer</code></strong>, so you can see whether e2e is eating the pipeline.</li>
+</ul>
+<p>The CTO view comes from the same place:</p>
+<ul>
+<li><strong>DORA metrics:</strong> Datadog&#39;s DORA Metrics feature takes deployment events from your pipeline and failure events from incidents, and calculates deployment frequency, lead time, change failure rate and time to restore.</li>
+<li><strong>SLOs and latency percentiles</strong> for the money journeys, from the monitoring you already have.</li>
+<li><strong>Pipeline and test trends</strong>, rolled up into one or two lines rather than a leaderboard.</li>
+</ul>
+<p><strong>Two dashboards, not one.</strong> Build a detailed QA view and a summary CTO view on the same data. That matters: when the CTO asks why a number moved, the Head of QA can click straight through from the summary widget to the tests and pipelines behind it.</p>
+<p>Two things still need care, whatever tool you use:</p>
+<ul>
+<li><strong>Tagging discipline is the whole game.</strong> If half the suites tag <code>journey:checkout</code> and the other half <code>journey:check-out</code>, the dashboard silently lies. Agree the tag names, keep them in one shared CI template or config, and treat a missing tag as a broken build step.</li>
+<li><strong>Production defects live in the issue tracker.</strong> The production half of defect containment, escaped defects with severity and root cause, comes from Jira or Linear, not from CI. Add <strong>&quot;found in&quot;</strong> (PR, nightly, staging, production, customer), <strong>severity</strong> and <strong>root cause category</strong> as required fields on bugs. It&#39;s a five-minute change most teams never make, and without it the most valuable metric on this list can&#39;t be calculated. Either report it from the tracker&#39;s own dashboards or send it to Datadog as an event or metric, so that everything sits on one screen.</li>
+</ul>
+<p>If you&#39;re not on Datadog, the same approach works elsewhere: Grafana with your CI&#39;s data source, Allure or ReportPortal for test history. And if all of that is too much for week one, a spreadsheet updated weekly is a perfectly good version one. What makes it work is the tagging and the habit, not the tool.</p>
+<p>And give every metric an <strong>owner</strong>. A number nobody is responsible for will drift quietly until it&#39;s useless.</p>
+<h2>How to present it</h2>
+<p>The data is half the job. The other half is how it lands.</p>
+<ul>
+<li><strong>Lead with the conclusion.</strong> Headline first, evidence second, ask last. If the listener stops after one sentence, they should still have the main point.</li>
+<li><strong>Speak the listener&#39;s language.</strong> For the Head of QA, that&#39;s risk, coverage and where the team&#39;s effort should go. For the CTO, it&#39;s time, money, customers and delivery speed. &quot;Flaky rate 3%&quot; is a QA sentence. &quot;About four person-days a month given back to the team&quot; is a CTO sentence.</li>
+<li><strong>Every number gets context.</strong> A baseline, a target or a trend. A number on its own invites &quot;is that good?&quot;, and you&#39;ve lost the room while you explain.</li>
+<li><strong>One chart, one point.</strong> Annotate the moment something changed, like &quot;flaky quarantine introduced here&quot;, so the cause and effect are on the chart rather than in your explanation.</li>
+<li><strong>A dashboard isn&#39;t a report.</strong> Dashboards are for self-service and digging. The report is the narrative on top. Sending someone a link to twenty panels is asking them to do your analysis.</li>
+<li><strong>No surprises for your manager.</strong> Even with the CTO a desk away, the Head of QA sees the numbers first. Often the right move is for them to present to the CTO with you alongside to answer the detail. It keeps the chain of trust intact, and it makes the case stronger because it comes from QA as a whole rather than from one person.</li>
+<li><strong>Keep it informal where the company is.</strong> At a startup, the CTO report might be a monthly post in a Slack channel or fifteen minutes in a standing meeting. That&#39;s fine. Consistency matters more than polish.</li>
+</ul>
+<h2>Common traps</h2>
+<ul>
+<li><strong>Too many metrics.</strong> If the report has thirty numbers, nobody knows which three matter. Start with five or six and add only when someone asks a question you can&#39;t answer.</li>
+<li><strong>Measuring what&#39;s easy instead of what matters.</strong> Test count is easy. Defect containment needs a tracker field. Do the harder one.</li>
+<li><strong>Reporting without deciding.</strong> If a metric never changes what anyone does, stop reporting it.</li>
+<li><strong>Turning metrics into targets for people.</strong> The moment the flaky rate is someone&#39;s performance goal, tests start getting deleted rather than fixed.</li>
+<li><strong>Hiding the bad weeks.</strong> One honest red quarter costs less credibility than one discovered cover-up.</li>
+</ul>
+<h2>Wrapping up</h2>
+<p>Metrics are how quality work gets seen, funded and trusted. The data is mostly already there: CI history, the issue tracker, deploys, incidents. The work is collecting it, keeping it honest and building two views on it.</p>
+<p>The Head of QA gets the detail: what&#39;s being caught where, what&#39;s flaky, what&#39;s not covered, what you&#39;re worried about. The CTO gets the outcome: speed, stability, cost and the one decision you need from them.</p>
+<p>And when you&#39;re asking for something, know which kind of case you&#39;re making. If you&#39;re saving time, show the arithmetic. If you&#39;re reducing risk, show the uncertainty honestly, start with a pilot and agree in advance how you&#39;ll judge it. Either way, measure the baseline first, because you can&#39;t prove things got better if you never recorded where they started.</p>
+
+  </div>
+</div>
+
+<footer id="contact">
+  <div class="wrap">
+    <span class="eyebrow mono">// let's talk</span>
+    <h2>Get in touch</h2>
+    <p>Based in Cardiff, open to remote roles, always happy to talk quality, automation or growth mindset.</p>
+    <div class="contact-links">
+      <a href="mailto:ptrigkas@gmail.com">✉ ptrigkas@gmail.com</a>
+      <a href="tel:07827421616">☎ 07827 421616</a>
+      <a href="index.html#top">📍 Cardiff, Wales</a>
+    </div>
+    <div class="foot-note mono">Wired for growth — one small check at a time.</div>
+  </div>
+</footer>
+
+<script src="js/app.js" defer></script>
+
+</body>
+</html>
