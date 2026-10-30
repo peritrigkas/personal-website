@@ -2,6 +2,7 @@
 title: Back to Basics: The Test Pyramid, and Why Your Architecture Might Want a Different Shape
 excerpt: Every test strategy deck has a triangle on it somewhere. The pyramid is still good advice, but it was drawn for a world where most of the risk lived inside one codebase. Microservices and front ends keep their risk in different places, and the shape of the test suite should follow the risk, not the slide.
 date: 2026-10-30
+image: img/blog/test-pyramid-back-to-basics/cover.png
 ---
 
 Every test strategy deck has a triangle on it somewhere. Usually around slide three, right after "Why quality matters" and just before the slide where someone proposes a new tool. It's wide at the bottom, narrow at the top, and everyone nods at it, because the test pyramid is one of the few things in our industry nearly everyone agrees with.
@@ -134,6 +135,8 @@ The shape list keeps growing, and most of them are the same rule applied to a di
 | Data pipeline | The data itself | Whatever catches bad data | Data quality checks |
 | Third-party wrapper | The third party | Mostly contracts | Contract and sandbox checks |
 
+![Three shapes side by side: a pyramid for a logic-heavy system, where risk lives inside the code (unit, service/API, E2E/UI); a honeycomb for microservices, where risk lives between services (implementation detail, service integration, integrated); and a trophy for the front end, where risk lives in the experience (static, unit, component integration, critical E2E). Test each risk at the cheapest layer that can catch it](img/blog/test-pyramid-back-to-basics/three-shapes.png)
+
 ## Is a different focus actually better?
 
 This is the real question. Changing the shape isn't automatically an improvement. It's worth asking what "better" means here, and I think it comes down to two things.
@@ -164,6 +167,8 @@ So my answer is yes, a different focus is more efficient *and* guards the system
 - **Synthetic checks and monitoring in production**, running those same critical journeys against the live system every few minutes. Some things only exist in production, and the cheapest place to catch them is right after a deploy, before a customer does.
 
 Done well, the whole thing looks less like one shape and more like a small city: a pyramid here, a honeycomb there, a trophy at the front, and a few roads joining them up that someone actually maintains.
+
+![A testing city: a rules engine with a pyramid, orders and payments with a honeycomb, a web app with a trophy and a data pipeline with data checks, joined by contracts and critical end-to-end journeys, all inside a ring of synthetic checks and monitoring. Right shape per component, thin protection across the system](img/blog/test-pyramid-back-to-basics/testing-city.png)
 
 ## How to find your own shape
 
