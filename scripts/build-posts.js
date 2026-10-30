@@ -1,8 +1,12 @@
 /*
  * Reads Markdown posts from /posts, writes a standalone HTML page for each
- * into the repo root (blog-<slug>.html), injects cards for the 3 most
- * recent posts into index.html between the BLOG_CARDS markers, and writes
- * an archive page (field-notes.html) listing every post.
+ * to field-notes/<slug>/index.html, injects cards for the 3 most recent
+ * posts into index.html between the BLOG_CARDS markers, and writes an
+ * archive page (field-notes/index.html) listing every post.
+ *
+ * Paths inside posts (images, links to other posts) are written relative to
+ * the site root, e.g. img/blog/<slug>/cover.png or field-notes/<slug>/, and
+ * are rewritten here so they resolve from wherever the page ends up.
  *
  * Usage: npm run build-posts
  */
@@ -13,11 +17,23 @@ const { marked } = require('marked');
 const ROOT = path.resolve(__dirname, '..');
 const POSTS_DIR = path.join(ROOT, 'posts');
 const INDEX_HTML = path.join(ROOT, 'index.html');
-const ARCHIVE_HTML = path.join(ROOT, 'field-notes.html');
+const NOTES_DIR = path.join(ROOT, 'field-notes');
 const CARD_COUNT = 3;
 const SITE_URL = 'https://peritrigkas.netlify.app/';
 const OG_FALLBACK_IMAGE = 'img/og-default.png';
 const SHARE_SUFFIX = ' — Field notes by Peri Trigkas';
+
+// Relative prefix from a post page (field-notes/<slug>/) back to the site root.
+const POST_BASE = '../../';
+// Relative prefix from the archive page (field-notes/) back to the site root.
+const ARCHIVE_BASE = '../';
+
+// Site-root-relative paths get the post page's prefix; absolute URLs,
+// mailto:, tel: and in-page anchors are left alone.
+function fromPost(href) {
+  if (/^([a-z]+:|\/|#)/i.test(href)) return href;
+  return POST_BASE + href;
+}
 
 // External links in post bodies open in a new tab; links to other pages on
 // the site stay in the same tab.
@@ -28,10 +44,18 @@ marked.use({
       const titleAttr = title ? ` title="${escapeAttr(title)}"` : '';
       const external = /^https?:\/\//i.test(href) && !href.startsWith(SITE_URL);
       const targetAttr = external ? ' target="_blank" rel="noopener"' : '';
-      return `<a href="${escapeAttr(href)}"${titleAttr}${targetAttr}>${text}</a>`;
+      return `<a href="${escapeAttr(fromPost(href))}"${titleAttr}${targetAttr}>${text}</a>`;
+    },
+    image({ href, title, text }) {
+      const titleAttr = title ? ` title="${escapeAttr(title)}"` : '';
+      return `<img src="${escapeAttr(fromPost(href))}" alt="${escapeAttr(text)}"${titleAttr}>`;
     },
   },
 });
+
+function postPath(slug) {
+  return `field-notes/${slug}/`;
+}
 
 function absoluteUrl(relative) {
   return new URL(relative, SITE_URL).href;
@@ -164,11 +188,12 @@ function formatDate(dateStr) {
 }
 
 function renderPostPage(post) {
+  const base = POST_BASE;
   const coverHtml = post.image
-    ? `<div class="post-cover"><img src="${post.image}" alt="${post.title}" loading="lazy"></div>`
+    ? `<div class="post-cover"><img src="${base}${post.image}" alt="${post.title}" loading="lazy"></div>`
     : `<div class="post-cover is-placeholder">[ Add cover image ]</div>`;
 
-  const postUrl = absoluteUrl(`blog-${post.slug}.html`);
+  const postUrl = absoluteUrl(postPath(post.slug));
   const metaTags = renderMetaTags({
     title: post.title,
     description: post.excerpt,
@@ -184,29 +209,29 @@ function renderPostPage(post) {
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>${post.title} — Peri Trigkas</title>
-<link rel="icon" href="favicon.ico" sizes="any">
-<link rel="icon" type="image/svg+xml" href="icon.svg">
-<link rel="apple-touch-icon" href="icon.png">
-<link rel="manifest" href="site.webmanifest">
+<link rel="icon" href="${base}favicon.ico" sizes="any">
+<link rel="icon" type="image/svg+xml" href="${base}icon.svg">
+<link rel="apple-touch-icon" href="${base}icon.png">
+<link rel="manifest" href="${base}site.webmanifest">
 ${metaTags}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="${base}css/style.css">
 </head>
 <body>
 
 <nav>
   <div class="wrap">
-    <a href="index.html#top" class="brand"><span class="dot"></span> Peri Trigkas</a>
+    <a href="${base}index.html#top" class="brand"><span class="dot"></span> Peri Trigkas</a>
     <ul class="navlinks" id="navlinks">
-      <li><a href="index.html#journey">Journey</a></li>
-      <li><a href="index.html#skills">Skills</a></li>
-      <li><a href="index.html#experience">Experience</a></li>
-      <li><a href="index.html#blog">Field notes</a></li>
-      <li><a href="index.html#books">Books</a></li>
-      <li><a href="index.html#hobbies">Beyond Work</a></li>
-      <li><a href="index.html#contact">Contact</a></li>
+      <li><a href="${base}index.html#journey">Journey</a></li>
+      <li><a href="${base}index.html#skills">Skills</a></li>
+      <li><a href="${base}index.html#experience">Experience</a></li>
+      <li><a href="${base}index.html#blog">Field notes</a></li>
+      <li><a href="${base}index.html#books">Books</a></li>
+      <li><a href="${base}index.html#hobbies">Beyond Work</a></li>
+      <li><a href="${base}index.html#contact">Contact</a></li>
     </ul>
     <button class="burger" id="burgerBtn" aria-label="Open menu" aria-expanded="false" aria-controls="navlinks">
       <span></span><span></span><span></span>
@@ -216,7 +241,7 @@ ${metaTags}
 
 <article class="post-hero">
   <div class="wrap">
-    <a class="back-link mono" href="index.html#blog">&larr; Back to Field notes</a>
+    <a class="back-link mono" href="${base}index.html#blog">&larr; Back to Field notes</a>
     <h1>${post.title}</h1>
     <span class="post-date mono">${formatDate(post.date)}</span>
     ${shareRow}
@@ -238,25 +263,26 @@ ${post.bodyHtml}
     <div class="contact-links">
       <a href="mailto:ptrigkas@gmail.com">✉ ptrigkas@gmail.com</a>
       <a href="tel:07827421616">☎ 07827 421616</a>
-      <a href="index.html#top">📍 Cardiff, Wales</a>
+      <a href="${base}index.html#top">📍 Cardiff, Wales</a>
     </div>
     <div class="foot-note mono">Wired for growth — one small check at a time.</div>
   </div>
 </footer>
 
-<script src="js/app.js" defer></script>
+<script src="${base}js/app.js" defer></script>
 
 </body>
 </html>
 `;
 }
 
-function renderCard(post) {
+// base is the relative prefix from the page the card appears on to the site root.
+function renderCard(post, base) {
   const thumbHtml = post.image
-    ? `<div class="blog-thumb"><img src="${post.image}" alt="${post.title}" loading="lazy"></div>`
+    ? `<div class="blog-thumb"><img src="${base}${post.image}" alt="${post.title}" loading="lazy"></div>`
     : `<div class="blog-thumb is-placeholder">[ Add cover image ]</div>`;
 
-  return `      <a class="blog-card" href="blog-${post.slug}.html">
+  return `      <a class="blog-card" href="${base}${postPath(post.slug)}">
         ${thumbHtml}
         <div class="blog-body">
           <span class="blog-title">${post.title}</span>
@@ -267,11 +293,12 @@ function renderCard(post) {
 }
 
 function renderArchivePage(posts) {
-  const cardsHtml = posts.map(renderCard).join('\n');
+  const base = ARCHIVE_BASE;
+  const cardsHtml = posts.map((post) => renderCard(post, base)).join('\n');
   const metaTags = renderMetaTags({
     title: 'Field notes — Peri Trigkas',
     description: 'Write-ups on testing, automation, and whatever breaks in interesting ways.',
-    url: absoluteUrl('field-notes.html'),
+    url: absoluteUrl('field-notes/'),
     imagePath: OG_FALLBACK_IMAGE,
     type: 'website',
   });
@@ -282,29 +309,29 @@ function renderArchivePage(posts) {
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Field notes — Peri Trigkas</title>
-<link rel="icon" href="favicon.ico" sizes="any">
-<link rel="icon" type="image/svg+xml" href="icon.svg">
-<link rel="apple-touch-icon" href="icon.png">
-<link rel="manifest" href="site.webmanifest">
+<link rel="icon" href="${base}favicon.ico" sizes="any">
+<link rel="icon" type="image/svg+xml" href="${base}icon.svg">
+<link rel="apple-touch-icon" href="${base}icon.png">
+<link rel="manifest" href="${base}site.webmanifest">
 ${metaTags}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="${base}css/style.css">
 </head>
 <body>
 
 <nav>
   <div class="wrap">
-    <a href="index.html#top" class="brand"><span class="dot"></span> Peri Trigkas</a>
+    <a href="${base}index.html#top" class="brand"><span class="dot"></span> Peri Trigkas</a>
     <ul class="navlinks" id="navlinks">
-      <li><a href="index.html#journey">Journey</a></li>
-      <li><a href="index.html#skills">Skills</a></li>
-      <li><a href="index.html#experience">Experience</a></li>
-      <li><a href="index.html#blog">Field notes</a></li>
-      <li><a href="index.html#books">Books</a></li>
-      <li><a href="index.html#hobbies">Beyond Work</a></li>
-      <li><a href="index.html#contact">Contact</a></li>
+      <li><a href="${base}index.html#journey">Journey</a></li>
+      <li><a href="${base}index.html#skills">Skills</a></li>
+      <li><a href="${base}index.html#experience">Experience</a></li>
+      <li><a href="${base}index.html#blog">Field notes</a></li>
+      <li><a href="${base}index.html#books">Books</a></li>
+      <li><a href="${base}index.html#hobbies">Beyond Work</a></li>
+      <li><a href="${base}index.html#contact">Contact</a></li>
     </ul>
     <button class="burger" id="burgerBtn" aria-label="Open menu" aria-expanded="false" aria-controls="navlinks">
       <span></span><span></span><span></span>
@@ -314,7 +341,7 @@ ${metaTags}
 
 <header class="post-hero">
   <div class="wrap">
-    <a class="back-link mono" href="index.html#blog">&larr; Back to home</a>
+    <a class="back-link mono" href="${base}index.html#blog">&larr; Back to home</a>
     <h1>Field notes</h1>
     <span class="post-date mono">${posts.length} post${posts.length === 1 ? '' : 's'}, newest first</span>
   </div>
@@ -334,13 +361,13 @@ ${cardsHtml}
     <div class="contact-links">
       <a href="mailto:ptrigkas@gmail.com">✉ ptrigkas@gmail.com</a>
       <a href="tel:07827421616">☎ 07827 421616</a>
-      <a href="index.html#top">📍 Cardiff, Wales</a>
+      <a href="${base}index.html#top">📍 Cardiff, Wales</a>
     </div>
     <div class="foot-note mono">Wired for growth — one small check at a time.</div>
   </div>
 </footer>
 
-<script src="js/app.js" defer></script>
+<script src="${base}js/app.js" defer></script>
 
 </body>
 </html>
@@ -372,19 +399,24 @@ function run() {
   const posts = files.map((f) => parsePost(path.join(POSTS_DIR, f)));
   posts.sort((a, b) => new Date(b.date) - new Date(a.date));
 
+  // field-notes/ is entirely generated, so rebuild it from scratch to drop
+  // pages for posts that have been renamed or removed.
+  fs.rmSync(NOTES_DIR, { recursive: true, force: true });
+
   for (const post of posts) {
-    const outPath = path.join(ROOT, `blog-${post.slug}.html`);
-    fs.writeFileSync(outPath, renderPostPage(post), 'utf-8');
-    console.log(`wrote blog-${post.slug}.html`);
+    const outDir = path.join(ROOT, postPath(post.slug));
+    fs.mkdirSync(outDir, { recursive: true });
+    fs.writeFileSync(path.join(outDir, 'index.html'), renderPostPage(post), 'utf-8');
+    console.log(`wrote ${postPath(post.slug)}index.html`);
   }
 
   const latest = posts.slice(0, CARD_COUNT);
-  const cardsHtml = latest.map(renderCard).join('\n');
+  const cardsHtml = latest.map((post) => renderCard(post, '')).join('\n');
   updateIndexCards(cardsHtml);
   console.log(`updated index.html with ${latest.length} card(s)`);
 
-  fs.writeFileSync(ARCHIVE_HTML, renderArchivePage(posts), 'utf-8');
-  console.log(`wrote field-notes.html with all ${posts.length} post(s)`);
+  fs.writeFileSync(path.join(NOTES_DIR, 'index.html'), renderArchivePage(posts), 'utf-8');
+  console.log(`wrote field-notes/index.html with all ${posts.length} post(s)`);
 }
 
 run();

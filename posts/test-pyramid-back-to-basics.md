@@ -53,7 +53,7 @@ Each service, on its own, tends to be fairly simple. Take an API call, validate 
 - An event is published with a slightly different shape, or in a different order.
 - A database migration changes what a query returns.
 - A timeout, a retry and an idempotency bug turn one payment into two.
-- The rule behind a perfectly valid 200 response changes, and nobody downstream notices (I went down that rabbit hole in [the mock vs real post](blog-mock-vs-real-tradeoff.html)).
+- The rule behind a perfectly valid 200 response changes, and nobody downstream notices (I went down that rabbit hole in [the mock vs real post](field-notes/mock-vs-real-tradeoff/)).
 
 Unit tests can't see any of this. You can have 95% line coverage on every service and still ship a system where the services disagree about what an order looks like. In microservices, a large part of the risk lives *between* services rather than inside them.
 
@@ -169,7 +169,7 @@ Done well, the whole thing looks less like one shape and more like a small city:
 
 You don't need a whiteboard and a new diagram. You need to know where your bugs come from.
 
-1. **Look at where defects actually came from.** Take the last few months of escaped defects and incidents and tag each one: was it logic inside a component, an integration between components, the UI and browser, data, or configuration and environment? If you already track where defects get caught (I covered that in [the quality metrics post](blog-quality-metrics-for-cto-and-head-of-qa.html)), you're most of the way there.
+1. **Look at where defects actually came from.** Take the last few months of escaped defects and incidents and tag each one: was it logic inside a component, an integration between components, the UI and browser, data, or configuration and environment? If you already track where defects get caught (I covered that in [the quality metrics post](field-notes/quality-metrics-for-cto-and-head-of-qa/)), you're most of the way there.
 2. **Look at what your tests actually cost.** Which layers are slowest, flakiest and break most often for reasons that aren't real bugs? Tagging tests by layer makes this a filter rather than an investigation.
 3. **Compare the two.** If most of your incidents are integration problems and most of your test effort is unit tests mocking the integrations away, that's your answer. If most of your bugs are logic errors and you're running 400 e2e tests, that's also your answer.
 4. **Move effort gradually.** Don't delete a thousand unit tests in a week. Add contracts at the boundary that hurt most, convert a few heavily mocked tests to service-level ones, and watch whether escaped defects in that area go down.

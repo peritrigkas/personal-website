@@ -4,17 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>From Green Builds to a Yes: Quality Metrics for the Head of QA and the CTO — Peri Trigkas</title>
-<link rel="icon" href="favicon.ico" sizes="any">
-<link rel="icon" type="image/svg+xml" href="icon.svg">
-<link rel="apple-touch-icon" href="icon.png">
-<link rel="manifest" href="site.webmanifest">
-<link rel="canonical" href="https://peritrigkas.netlify.app/blog-quality-metrics-for-cto-and-head-of-qa.html">
+<link rel="icon" href="../../favicon.ico" sizes="any">
+<link rel="icon" type="image/svg+xml" href="../../icon.svg">
+<link rel="apple-touch-icon" href="../../icon.png">
+<link rel="manifest" href="../../site.webmanifest">
+<link rel="canonical" href="https://peritrigkas.netlify.app/field-notes/quality-metrics-for-cto-and-head-of-qa/">
 <meta name="description" content="Sooner or later an SDET has to prove something with numbers, either that an initiative is worth the effort or that quality is genuinely where it should be. Which metrics matter, how tagging pipelines and tests turns the tools you already have into the dashboard, and why the Head of QA and the CTO need two different reports built from the same data.">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="Peri Trigkas">
 <meta property="og:title" content="From Green Builds to a Yes: Quality Metrics for the Head of QA and the CTO">
 <meta property="og:description" content="Sooner or later an SDET has to prove something with numbers, either that an initiative is worth the effort or that quality is genuinely where it should be. Which metrics matter, how tagging pipelines and tests turns the tools you already have into the dashboard, and why the Head of QA and the CTO need two different reports built from the same data.">
-<meta property="og:url" content="https://peritrigkas.netlify.app/blog-quality-metrics-for-cto-and-head-of-qa.html">
+<meta property="og:url" content="https://peritrigkas.netlify.app/field-notes/quality-metrics-for-cto-and-head-of-qa/">
 <meta property="og:image" content="https://peritrigkas.netlify.app/img/blog/quality-metrics-for-cto-and-head-of-qa/cover.png">
 <meta property="og:image:secure_url" content="https://peritrigkas.netlify.app/img/blog/quality-metrics-for-cto-and-head-of-qa/cover.png">
 <meta property="og:image:type" content="image/png">
@@ -29,21 +29,21 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="../../css/style.css">
 </head>
 <body>
 
 <nav>
   <div class="wrap">
-    <a href="index.html#top" class="brand"><span class="dot"></span> Peri Trigkas</a>
+    <a href="../../index.html#top" class="brand"><span class="dot"></span> Peri Trigkas</a>
     <ul class="navlinks" id="navlinks">
-      <li><a href="index.html#journey">Journey</a></li>
-      <li><a href="index.html#skills">Skills</a></li>
-      <li><a href="index.html#experience">Experience</a></li>
-      <li><a href="index.html#blog">Field notes</a></li>
-      <li><a href="index.html#books">Books</a></li>
-      <li><a href="index.html#hobbies">Beyond Work</a></li>
-      <li><a href="index.html#contact">Contact</a></li>
+      <li><a href="../../index.html#journey">Journey</a></li>
+      <li><a href="../../index.html#skills">Skills</a></li>
+      <li><a href="../../index.html#experience">Experience</a></li>
+      <li><a href="../../index.html#blog">Field notes</a></li>
+      <li><a href="../../index.html#books">Books</a></li>
+      <li><a href="../../index.html#hobbies">Beyond Work</a></li>
+      <li><a href="../../index.html#contact">Contact</a></li>
     </ul>
     <button class="burger" id="burgerBtn" aria-label="Open menu" aria-expanded="false" aria-controls="navlinks">
       <span></span><span></span><span></span>
@@ -53,18 +53,18 @@
 
 <article class="post-hero">
   <div class="wrap">
-    <a class="back-link mono" href="index.html#blog">&larr; Back to Field notes</a>
+    <a class="back-link mono" href="../../index.html#blog">&larr; Back to Field notes</a>
     <h1>From Green Builds to a Yes: Quality Metrics for the Head of QA and the CTO</h1>
     <span class="post-date mono">20 Oct 2026</span>
     <div class="post-share">
       <span class="share-label mono">Share</span>
-      <a class="share-btn" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fperitrigkas.netlify.app%2Fblog-quality-metrics-for-cto-and-head-of-qa.html" target="_blank" rel="noopener" aria-label="Share on LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.07 2.07 0 1 1 0-4.13 2.07 2.07 0 0 1 0 4.13zM7.12 20.45H3.55V9h3.57v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"/></svg></a>
-      <a class="share-btn" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fperitrigkas.netlify.app%2Fblog-quality-metrics-for-cto-and-head-of-qa.html&amp;text=From%20Green%20Builds%20to%20a%20Yes%3A%20Quality%20Metrics%20for%20the%20Head%20of%20QA%20and%20the%20CTO%20%E2%80%94%20Field%20notes%20by%20Peri%20Trigkas" target="_blank" rel="noopener" aria-label="Share on X"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.24 2.25h3.31l-7.23 8.26 8.5 11.24h-6.66l-5.21-6.82-5.97 6.82H1.68l7.73-8.84L1.25 2.25h6.83l4.71 6.23 5.45-6.23zm-1.16 17.52h1.83L7.01 4.13H5.05l12.03 15.64z"/></svg></a>
-      <a class="share-btn" href="mailto:?subject=From%20Green%20Builds%20to%20a%20Yes%3A%20Quality%20Metrics%20for%20the%20Head%20of%20QA%20and%20the%20CTO&amp;body=From%20Green%20Builds%20to%20a%20Yes%3A%20Quality%20Metrics%20for%20the%20Head%20of%20QA%20and%20the%20CTO%20%E2%80%94%20Field%20notes%20by%20Peri%20Trigkas%0A%0Ahttps%3A%2F%2Fperitrigkas.netlify.app%2Fblog-quality-metrics-for-cto-and-head-of-qa.html" aria-label="Share by email"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 4h20a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1zm10 7.13L3.5 6H20.5L12 11.13zM3 8.24V18h18V8.24l-9 5.4-9-5.4z"/></svg></a>
-      <a class="share-btn" href="https://wa.me/?text=From%20Green%20Builds%20to%20a%20Yes%3A%20Quality%20Metrics%20for%20the%20Head%20of%20QA%20and%20the%20CTO%20%E2%80%94%20Field%20notes%20by%20Peri%20Trigkas%20https%3A%2F%2Fperitrigkas.netlify.app%2Fblog-quality-metrics-for-cto-and-head-of-qa.html" target="_blank" rel="noopener" aria-label="Share on WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm0 1.67c2.2 0 4.27.86 5.83 2.42a8.19 8.19 0 0 1 2.42 5.83c0 4.54-3.7 8.24-8.25 8.24a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.16 8.16 0 0 1-1.25-4.38c0-4.54 3.7-8.24 8.24-8.24zm4.52 10.35c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.24-.64.8-.78.97-.14.16-.29.18-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.24-1.47-1.38-1.72-.14-.25-.02-.38.11-.5.11-.11.25-.29.37-.43.13-.14.17-.24.25-.41.08-.16.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.42-.56-.42-.14 0-.31-.02-.47-.02-.16 0-.43.06-.65.31-.22.24-.86.84-.86 2.05 0 1.21.88 2.38 1 2.54.12.16 1.73 2.64 4.19 3.7.59.26 1.04.41 1.4.52.59.19 1.12.16 1.54.1.47-.07 1.47-.6 1.67-1.18.21-.58.21-1.08.14-1.18-.06-.11-.22-.17-.47-.29z"/></svg></a>
-      <button type="button" class="share-btn share-copy" data-copy-url="https://peritrigkas.netlify.app/blog-quality-metrics-for-cto-and-head-of-qa.html" aria-label="Copy link"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 1H4a2 2 0 0 0-2 2v13h2V3h11V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h10v14z"/></svg></button>
+      <a class="share-btn" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fperitrigkas.netlify.app%2Ffield-notes%2Fquality-metrics-for-cto-and-head-of-qa%2F" target="_blank" rel="noopener" aria-label="Share on LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.07 2.07 0 1 1 0-4.13 2.07 2.07 0 0 1 0 4.13zM7.12 20.45H3.55V9h3.57v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"/></svg></a>
+      <a class="share-btn" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fperitrigkas.netlify.app%2Ffield-notes%2Fquality-metrics-for-cto-and-head-of-qa%2F&amp;text=From%20Green%20Builds%20to%20a%20Yes%3A%20Quality%20Metrics%20for%20the%20Head%20of%20QA%20and%20the%20CTO%20%E2%80%94%20Field%20notes%20by%20Peri%20Trigkas" target="_blank" rel="noopener" aria-label="Share on X"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.24 2.25h3.31l-7.23 8.26 8.5 11.24h-6.66l-5.21-6.82-5.97 6.82H1.68l7.73-8.84L1.25 2.25h6.83l4.71 6.23 5.45-6.23zm-1.16 17.52h1.83L7.01 4.13H5.05l12.03 15.64z"/></svg></a>
+      <a class="share-btn" href="mailto:?subject=From%20Green%20Builds%20to%20a%20Yes%3A%20Quality%20Metrics%20for%20the%20Head%20of%20QA%20and%20the%20CTO&amp;body=From%20Green%20Builds%20to%20a%20Yes%3A%20Quality%20Metrics%20for%20the%20Head%20of%20QA%20and%20the%20CTO%20%E2%80%94%20Field%20notes%20by%20Peri%20Trigkas%0A%0Ahttps%3A%2F%2Fperitrigkas.netlify.app%2Ffield-notes%2Fquality-metrics-for-cto-and-head-of-qa%2F" aria-label="Share by email"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 4h20a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1zm10 7.13L3.5 6H20.5L12 11.13zM3 8.24V18h18V8.24l-9 5.4-9-5.4z"/></svg></a>
+      <a class="share-btn" href="https://wa.me/?text=From%20Green%20Builds%20to%20a%20Yes%3A%20Quality%20Metrics%20for%20the%20Head%20of%20QA%20and%20the%20CTO%20%E2%80%94%20Field%20notes%20by%20Peri%20Trigkas%20https%3A%2F%2Fperitrigkas.netlify.app%2Ffield-notes%2Fquality-metrics-for-cto-and-head-of-qa%2F" target="_blank" rel="noopener" aria-label="Share on WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm0 1.67c2.2 0 4.27.86 5.83 2.42a8.19 8.19 0 0 1 2.42 5.83c0 4.54-3.7 8.24-8.25 8.24a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.16 8.16 0 0 1-1.25-4.38c0-4.54 3.7-8.24 8.24-8.24zm4.52 10.35c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.24-.64.8-.78.97-.14.16-.29.18-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.24-1.47-1.38-1.72-.14-.25-.02-.38.11-.5.11-.11.25-.29.37-.43.13-.14.17-.24.25-.41.08-.16.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.42-.56-.42-.14 0-.31-.02-.47-.02-.16 0-.43.06-.65.31-.22.24-.86.84-.86 2.05 0 1.21.88 2.38 1 2.54.12.16 1.73 2.64 4.19 3.7.59.26 1.04.41 1.4.52.59.19 1.12.16 1.54.1.47-.07 1.47-.6 1.67-1.18.21-.58.21-1.08.14-1.18-.06-.11-.22-.17-.47-.29z"/></svg></a>
+      <button type="button" class="share-btn share-copy" data-copy-url="https://peritrigkas.netlify.app/field-notes/quality-metrics-for-cto-and-head-of-qa/" aria-label="Copy link"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 1H4a2 2 0 0 0-2 2v13h2V3h11V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h10v14z"/></svg></button>
     </div>
-    <div class="post-cover"><img src="img/blog/quality-metrics-for-cto-and-head-of-qa/cover.png" alt="From Green Builds to a Yes: Quality Metrics for the Head of QA and the CTO" loading="lazy"></div>
+    <div class="post-cover"><img src="../../img/blog/quality-metrics-for-cto-and-head-of-qa/cover.png" alt="From Green Builds to a Yes: Quality Metrics for the Head of QA and the CTO" loading="lazy"></div>
   </div>
 </article>
 
@@ -96,7 +96,7 @@
 <li><strong>Escaped defects</strong>, meaning bugs found in production, broken down by severity. The single most honest quality number. Most teams use a numbered severity scale where lower means worse: <strong>Sev1</strong> is critical (a core service down, data lost or exposed, money directly affected), <strong>Sev2</strong> is major (an important feature broken, but with a workaround or only some users hit), and <strong>Sev3</strong> and below are minor or cosmetic. The exact definitions vary between companies.</li>
 <li><strong>Change failure rate</strong>: the percentage of deployments that cause an incident, a rollback or a hotfix.</li>
 <li><strong>Time to restore</strong>: how long it takes to recover when something does break.</li>
-<li><strong>SLOs and error budgets</strong> for the journeys that make money: sign-up, login, checkout. Latency belongs here too, as p95 and p99 rather than the average (I covered why in <a href="blog-p95-p99-vs-average.html">the percentiles post</a>).</li>
+<li><strong>SLOs and error budgets</strong> for the journeys that make money: sign-up, login, checkout. Latency belongs here too, as p95 and p99 rather than the average (I covered why in <a href="../../field-notes/p95-p99-vs-average/">the percentiles post</a>).</li>
 </ul>
 <p><strong>2. Delivery flow: how fast change gets to users safely</strong></p>
 <ul>
@@ -109,7 +109,7 @@
 <li><strong>Flaky rate</strong>: how often a test fails and then passes on the same commit with no code change.</li>
 <li><strong>Suite duration</strong> and its trend.</li>
 <li><strong>Critical journey coverage</strong>: which of the business-critical user journeys have automated checks and which still rely on someone clicking through them. This is far more useful than line coverage.</li>
-<li><strong>Mutation score</strong> on core modules, if you want to know whether the tests would actually notice a bug (<a href="blog-mutation-testing.html">more on that here</a>).</li>
+<li><strong>Mutation score</strong> on core modules, if you want to know whether the tests would actually notice a bug (<a href="../../field-notes/mutation-testing/">more on that here</a>).</li>
 </ul>
 <p><strong>4. Cost: what quality is costing in time and money</strong></p>
 <ul>
@@ -144,7 +144,7 @@
 <li><strong>It&#39;s mostly inside QA&#39;s own remit.</strong> The Head of QA can usually approve it from existing capacity, so it might not need to reach the CTO as a request at all, only as a result.</li>
 </ul>
 <h3>Case B: rolling out contract testing</h3>
-<p>The problem: services talk to each other through APIs that change, and some of those changes have broken production. I&#39;ve written before about how <a href="blog-mock-vs-real-tradeoff.html">mocks drift away from the real service</a>; contract testing is the usual fix.</p>
+<p>The problem: services talk to each other through APIs that change, and some of those changes have broken production. I&#39;ve written before about how <a href="../../field-notes/mock-vs-real-tradeoff/">mocks drift away from the real service</a>; contract testing is the usual fix.</p>
 <p>The evidence here comes from incident history, and it&#39;s thinner. Illustrative numbers:</p>
 <ul>
 <li>In the last six months, <strong>5 incidents</strong> traced back to one service changing a response the other relied on: a renamed field, a new enum value, a changed rule behind a 200.</li>
@@ -206,7 +206,7 @@
 <td>Overselling with a precise ROI</td>
 </tr>
 </tbody></table>
-<p><img src="img/blog/quality-metrics-for-cto-and-head-of-qa/efficiency-vs-risk.png" alt="Two business cases side by side: the flaky suite fix is an efficiency case (150 runs a week, 12% flaky, 9 hours a week lost, payback in about a month) argued with arithmetic; contract testing is a risk-reduction case (5 incidents in 6 months, 2 hitting checkout, 10 to 15 days of setup, a 6-week pilot) argued with ranges and uncertainty"></p>
+<p><img src="../../img/blog/quality-metrics-for-cto-and-head-of-qa/efficiency-vs-risk.png" alt="Two business cases side by side: the flaky suite fix is an efficiency case (150 runs a week, 12% flaky, 9 hours a week lost, payback in about a month) argued with arithmetic; contract testing is a risk-reduction case (5 incidents in 6 months, 2 hitting checkout, 10 to 15 days of setup, a 6-week pilot) argued with ranges and uncertainty"></p>
 <p>The general lesson: <strong>efficiency cases want arithmetic, risk cases want honesty about uncertainty.</strong> Forcing a risk case into ROI form is how SDETs lose credibility, because the first person who checks the maths will find the assumptions doing all the work.</p>
 <p>Two rules apply to both:</p>
 <ul>
@@ -286,7 +286,7 @@ incident data.
 </code></pre>
 <p>No test names, no flaky leaderboard, no suite duration. All of that sits behind the numbers, and the CTO can ask for it. What they get is a direction, a cost and a clear question.</p>
 <p>In a startup the CTO might well ask for the detail, and that&#39;s fine; have the dashboard ready. But lead with the summary. Being close to the CTO means you get their attention easily, not that you should spend it on detail.</p>
-<p><img src="img/blog/quality-metrics-for-cto-and-head-of-qa/two-dashboards.png" alt="One trusted data set from CI history, test results, deployments, incidents and the issue tracker feeds two dashboards: the Head of QA view shows defect containment, flaky rate, PR feedback time, critical journeys and risks with owners; the CTO view shows DORA trends, Sev1 and Sev2 defects, SLO status, cost of quality and one clear ask"></p>
+<p><img src="../../img/blog/quality-metrics-for-cto-and-head-of-qa/two-dashboards.png" alt="One trusted data set from CI history, test results, deployments, incidents and the issue tracker feeds two dashboards: the Head of QA view shows defect containment, flaky rate, PR feedback time, critical journeys and risks with owners; the CTO view shows DORA trends, Sev1 and Sev2 defects, SLO status, cost of quality and one clear ask"></p>
 <h2>Building the data and the dashboard</h2>
 <p>You don&#39;t need a metrics database, a data pipeline or a dedicated quality platform. If you&#39;re already on an observability tool like Datadog, most of this is a tagging problem, not a storage problem. Send pipeline and test results there with consistent tags, and the dashboards are a few widgets and filters on top.</p>
 <p><strong>Pipelines.</strong> Datadog&#39;s <strong>CI Visibility</strong> connects to GitHub Actions, GitLab, Jenkins and the other common CI providers and records every pipeline, stage and job: duration, status, retries, branch and commit. That covers PR feedback time, pipeline duration trends and how often main goes red, with nothing to build.</p>
@@ -370,13 +370,13 @@ incident data.
     <div class="contact-links">
       <a href="mailto:ptrigkas@gmail.com">✉ ptrigkas@gmail.com</a>
       <a href="tel:07827421616">☎ 07827 421616</a>
-      <a href="index.html#top">📍 Cardiff, Wales</a>
+      <a href="../../index.html#top">📍 Cardiff, Wales</a>
     </div>
     <div class="foot-note mono">Wired for growth — one small check at a time.</div>
   </div>
 </footer>
 
-<script src="js/app.js" defer></script>
+<script src="../../js/app.js" defer></script>
 
 </body>
 </html>
