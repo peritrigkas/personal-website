@@ -19,6 +19,20 @@ const SITE_URL = 'https://peritrigkas.netlify.app/';
 const OG_FALLBACK_IMAGE = 'img/og-default.png';
 const SHARE_SUFFIX = ' — Field notes by Peri Trigkas';
 
+// External links in post bodies open in a new tab; links to other pages on
+// the site stay in the same tab.
+marked.use({
+  renderer: {
+    link({ href, title, tokens }) {
+      const text = this.parser.parseInline(tokens);
+      const titleAttr = title ? ` title="${escapeAttr(title)}"` : '';
+      const external = /^https?:\/\//i.test(href) && !href.startsWith(SITE_URL);
+      const targetAttr = external ? ' target="_blank" rel="noopener"' : '';
+      return `<a href="${escapeAttr(href)}"${titleAttr}${targetAttr}>${text}</a>`;
+    },
+  },
+});
+
 function absoluteUrl(relative) {
   return new URL(relative, SITE_URL).href;
 }

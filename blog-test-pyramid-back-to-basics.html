@@ -74,7 +74,7 @@
 <p>Then the next year someone draws a trophy. Then a honeycomb. Then a diamond. Testing must be the only discipline where geometry and dessert get equal billing (we&#39;ll get to the ice cream cone).</p>
 <p>So, back to basics. What the pyramid actually says, why it works, where it stops fitting, and whether pointing your testing effort somewhere else gives you a better guarded system or just a differently shaped slide.</p>
 <h2>The traditional pyramid</h2>
-<p>The test pyramid is usually credited to Mike Cohn, who described it in <a href="https://www.mountaingoatsoftware.com/books/succeeding-with-agile-software-development-using-scrum"><em>Succeeding with Agile</em></a> (2009). His version had three layers:</p>
+<p>The test pyramid is usually credited to Mike Cohn, who described it in <a href="https://www.mountaingoatsoftware.com/books/succeeding-with-agile-software-development-using-scrum" target="_blank" rel="noopener"><em>Succeeding with Agile</em></a> (2009). His version had three layers:</p>
 <ul>
 <li><strong>Unit tests</strong> at the bottom: lots of them, small, fast, testing one piece of code in isolation.</li>
 <li><strong>Service tests</strong> in the middle: fewer of them, testing behaviour through an API rather than the UI.</li>
@@ -82,7 +82,7 @@
 </ul>
 <p>The argument is about economics. As you go up the pyramid, tests get slower, more expensive to write, more brittle to maintain, and harder to diagnose when they fail. A unit test that fails tells you which function is wrong. An end-to-end test that fails tells you that <em>something, somewhere</em> is wrong, and you&#39;re welcome to spend the afternoon finding out what.</p>
 <p>So you push each check as low as it can meaningfully go. If a pricing rule can be tested with a unit test in two milliseconds, don&#39;t test it by logging into the app, adding things to a basket and reading the total off the screen.</p>
-<p>Ham Vocke&#39;s <a href="https://martinfowler.com/articles/practical-test-pyramid.html">The Practical Test Pyramid</a> on Martin Fowler&#39;s site is still the best long read on this, and it makes two points that get lost when the pyramid is shrunk down to a slide:</p>
+<p>Ham Vocke&#39;s <a href="https://martinfowler.com/articles/practical-test-pyramid.html" target="_blank" rel="noopener">The Practical Test Pyramid</a> on Martin Fowler&#39;s site is still the best long read on this, and it makes two points that get lost when the pyramid is shrunk down to a slide:</p>
 <ul>
 <li><strong>The layer names don&#39;t matter much.</strong> Teams argue for hours about what counts as an &quot;integration test&quot;. The useful idea is the ratio: many small, fast, focused tests, fewer big, slow, broad ones.</li>
 <li><strong>Don&#39;t duplicate.</strong> If a lower layer already covers something, a higher test checking the same thing adds cost without adding confidence.</li>
@@ -109,7 +109,7 @@
 </ul>
 <p>Unit tests can&#39;t see any of this. You can have 95% line coverage on every service and still ship a system where the services disagree about what an order looks like. In microservices, a large part of the risk lives <em>between</em> services rather than inside them.</p>
 <h3>Spotify&#39;s honeycomb</h3>
-<p>This is the argument Spotify made in <a href="https://engineering.atspotify.com/2018/01/testing-of-microservices">Testing of Microservices</a> (André Schaffer, 2018). They went as far as saying the traditional pyramid can be &quot;actively harmful&quot; for microservices, and proposed the <strong>testing honeycomb</strong> instead. It has three kinds of test:</p>
+<p>This is the argument Spotify made in <a href="https://engineering.atspotify.com/2018/01/testing-of-microservices" target="_blank" rel="noopener">Testing of Microservices</a> (André Schaffer, 2018). They went as far as saying the traditional pyramid can be &quot;actively harmful&quot; for microservices, and proposed the <strong>testing honeycomb</strong> instead. It has three kinds of test:</p>
 <ul>
 <li><strong>Implementation detail tests</strong> (small, at one end): unit tests, kept for code that is genuinely isolated and has real internal complexity of its own. Their example is parsing build logs, where there are plenty of awkward cases worth testing directly.</li>
 <li><strong>Integration tests</strong> (the big middle): the main focus. Start the service for real, with a real database or message bus, send it inputs through its actual API and check what comes out the other side. Test the service from its edges, in isolation from other services.</li>
@@ -138,7 +138,7 @@
 </ul>
 <p>A pure unit test of a React component, with every child mocked and every hook stubbed, tells you surprisingly little about any of that. The user doesn&#39;t experience your components one at a time. They experience the whole page, in a real browser, at whatever window size they happen to be using.</p>
 <h3>The testing trophy</h3>
-<p>Kent C. Dodds made this argument with the <a href="https://kentcdodds.com/blog/the-testing-trophy-and-testing-classifications">testing trophy</a> in 2018, borrowing Guillermo Rauch&#39;s line: <em>&quot;Write tests. Not too many. Mostly integration.&quot;</em> From the bottom up:</p>
+<p>Kent C. Dodds made this argument with the <a href="https://kentcdodds.com/blog/the-testing-trophy-and-testing-classifications" target="_blank" rel="noopener">testing trophy</a> in 2018, borrowing Guillermo Rauch&#39;s line: <em>&quot;Write tests. Not too many. Mostly integration.&quot;</em> From the bottom up:</p>
 <ul>
 <li><strong>Static analysis</strong> as the base: TypeScript, ESLint. A whole category of bugs (typos, wrong types, a missing prop) caught before a single test runs, almost for free.</li>
 <li><strong>Unit tests</strong>: a modest layer, for pure logic like formatters, reducers and validation helpers.</li>
