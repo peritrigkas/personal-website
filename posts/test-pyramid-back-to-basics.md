@@ -12,7 +12,7 @@ So, back to basics. What the pyramid actually says, why it works, where it stops
 
 ## The traditional pyramid
 
-The test pyramid is usually credited to Mike Cohn, who described it in *Succeeding with Agile* (2009). His version had three layers:
+The test pyramid is usually credited to Mike Cohn, who described it in [*Succeeding with Agile*](https://www.mountaingoatsoftware.com/books/succeeding-with-agile-software-development-using-scrum) (2009). His version had three layers:
 
 - **Unit tests** at the bottom: lots of them, small, fast, testing one piece of code in isolation.
 - **Service tests** in the middle: fewer of them, testing behaviour through an API rather than the UI.
