@@ -1,0 +1,10 @@
+# Old flat URLs from before posts moved into field-notes/. Keep these so
+# links already shared on LinkedIn and elsewhere still land on the post.
+/field-notes.html  /field-notes/  301
+/blog-quality-metrics-for-cto-and-head-of-qa.html  /field-notes/quality-metrics-for-cto-and-head-of-qa/  301
+/blog-p95-p99-vs-average.html  /field-notes/p95-p99-vs-average/  301
+/blog-mock-vs-real-tradeoff.html  /field-notes/mock-vs-real-tradeoff/  301
+/blog-mutation-testing.html  /field-notes/mutation-testing/  301
+/blog-from-circuits-to-code.html  /field-notes/from-circuits-to-code/  301
+/blog-cicd-pipeline-jenkins-ai.html  /field-notes/cicd-pipeline-jenkins-ai/  301
+/blog-manual-vs-automation.html  /field-notes/manual-vs-automation/  301

@@ -4,17 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>From Commit to Production: A Jenkins Pipeline, Stage by Stage — Peri Trigkas</title>
-<link rel="icon" href="favicon.ico" sizes="any">
-<link rel="icon" type="image/svg+xml" href="icon.svg">
-<link rel="apple-touch-icon" href="icon.png">
-<link rel="manifest" href="site.webmanifest">
-<link rel="canonical" href="https://peritrigkas.netlify.app/blog-cicd-pipeline-jenkins-ai.html">
+<link rel="icon" href="../../favicon.ico" sizes="any">
+<link rel="icon" type="image/svg+xml" href="../../icon.svg">
+<link rel="apple-touch-icon" href="../../icon.png">
+<link rel="manifest" href="../../site.webmanifest">
+<link rel="canonical" href="https://peritrigkas.netlify.app/field-notes/cicd-pipeline-jenkins-ai/">
 <meta name="description" content="What actually happens between a merged PR and a running service in production, the Jenkins stages that gate it, and where AI genuinely earns its place in building and watching that pipeline.">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="Peri Trigkas">
 <meta property="og:title" content="From Commit to Production: A Jenkins Pipeline, Stage by Stage">
 <meta property="og:description" content="What actually happens between a merged PR and a running service in production, the Jenkins stages that gate it, and where AI genuinely earns its place in building and watching that pipeline.">
-<meta property="og:url" content="https://peritrigkas.netlify.app/blog-cicd-pipeline-jenkins-ai.html">
+<meta property="og:url" content="https://peritrigkas.netlify.app/field-notes/cicd-pipeline-jenkins-ai/">
 <meta property="og:image" content="https://peritrigkas.netlify.app/img/blog/cicd-pipeline-jenkins-ai/cover.jpg">
 <meta property="og:image:secure_url" content="https://peritrigkas.netlify.app/img/blog/cicd-pipeline-jenkins-ai/cover.jpg">
 <meta property="og:image:type" content="image/jpeg">
@@ -29,21 +29,21 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="../../css/style.css">
 </head>
 <body>
 
 <nav>
   <div class="wrap">
-    <a href="index.html#top" class="brand"><span class="dot"></span> Peri Trigkas</a>
+    <a href="../../index.html#top" class="brand"><span class="dot"></span> Peri Trigkas</a>
     <ul class="navlinks" id="navlinks">
-      <li><a href="index.html#journey">Journey</a></li>
-      <li><a href="index.html#skills">Skills</a></li>
-      <li><a href="index.html#experience">Experience</a></li>
-      <li><a href="index.html#blog">Field notes</a></li>
-      <li><a href="index.html#books">Books</a></li>
-      <li><a href="index.html#hobbies">Beyond Work</a></li>
-      <li><a href="index.html#contact">Contact</a></li>
+      <li><a href="../../index.html#journey">Journey</a></li>
+      <li><a href="../../index.html#skills">Skills</a></li>
+      <li><a href="../../index.html#experience">Experience</a></li>
+      <li><a href="../../index.html#blog">Field notes</a></li>
+      <li><a href="../../index.html#books">Books</a></li>
+      <li><a href="../../index.html#hobbies">Beyond Work</a></li>
+      <li><a href="../../index.html#contact">Contact</a></li>
     </ul>
     <button class="burger" id="burgerBtn" aria-label="Open menu" aria-expanded="false" aria-controls="navlinks">
       <span></span><span></span><span></span>
@@ -53,18 +53,18 @@
 
 <article class="post-hero">
   <div class="wrap">
-    <a class="back-link mono" href="index.html#blog">&larr; Back to Field notes</a>
+    <a class="back-link mono" href="../../index.html#blog">&larr; Back to Field notes</a>
     <h1>From Commit to Production: A Jenkins Pipeline, Stage by Stage</h1>
     <span class="post-date mono">21 Aug 2026</span>
     <div class="post-share">
       <span class="share-label mono">Share</span>
-      <a class="share-btn" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fperitrigkas.netlify.app%2Fblog-cicd-pipeline-jenkins-ai.html" target="_blank" rel="noopener" aria-label="Share on LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.07 2.07 0 1 1 0-4.13 2.07 2.07 0 0 1 0 4.13zM7.12 20.45H3.55V9h3.57v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"/></svg></a>
-      <a class="share-btn" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fperitrigkas.netlify.app%2Fblog-cicd-pipeline-jenkins-ai.html&amp;text=From%20Commit%20to%20Production%3A%20A%20Jenkins%20Pipeline%2C%20Stage%20by%20Stage%20%E2%80%94%20Field%20notes%20by%20Peri%20Trigkas" target="_blank" rel="noopener" aria-label="Share on X"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.24 2.25h3.31l-7.23 8.26 8.5 11.24h-6.66l-5.21-6.82-5.97 6.82H1.68l7.73-8.84L1.25 2.25h6.83l4.71 6.23 5.45-6.23zm-1.16 17.52h1.83L7.01 4.13H5.05l12.03 15.64z"/></svg></a>
-      <a class="share-btn" href="mailto:?subject=From%20Commit%20to%20Production%3A%20A%20Jenkins%20Pipeline%2C%20Stage%20by%20Stage&amp;body=From%20Commit%20to%20Production%3A%20A%20Jenkins%20Pipeline%2C%20Stage%20by%20Stage%20%E2%80%94%20Field%20notes%20by%20Peri%20Trigkas%0A%0Ahttps%3A%2F%2Fperitrigkas.netlify.app%2Fblog-cicd-pipeline-jenkins-ai.html" aria-label="Share by email"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 4h20a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1zm10 7.13L3.5 6H20.5L12 11.13zM3 8.24V18h18V8.24l-9 5.4-9-5.4z"/></svg></a>
-      <a class="share-btn" href="https://wa.me/?text=From%20Commit%20to%20Production%3A%20A%20Jenkins%20Pipeline%2C%20Stage%20by%20Stage%20%E2%80%94%20Field%20notes%20by%20Peri%20Trigkas%20https%3A%2F%2Fperitrigkas.netlify.app%2Fblog-cicd-pipeline-jenkins-ai.html" target="_blank" rel="noopener" aria-label="Share on WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm0 1.67c2.2 0 4.27.86 5.83 2.42a8.19 8.19 0 0 1 2.42 5.83c0 4.54-3.7 8.24-8.25 8.24a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.16 8.16 0 0 1-1.25-4.38c0-4.54 3.7-8.24 8.24-8.24zm4.52 10.35c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.24-.64.8-.78.97-.14.16-.29.18-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.24-1.47-1.38-1.72-.14-.25-.02-.38.11-.5.11-.11.25-.29.37-.43.13-.14.17-.24.25-.41.08-.16.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.42-.56-.42-.14 0-.31-.02-.47-.02-.16 0-.43.06-.65.31-.22.24-.86.84-.86 2.05 0 1.21.88 2.38 1 2.54.12.16 1.73 2.64 4.19 3.7.59.26 1.04.41 1.4.52.59.19 1.12.16 1.54.1.47-.07 1.47-.6 1.67-1.18.21-.58.21-1.08.14-1.18-.06-.11-.22-.17-.47-.29z"/></svg></a>
-      <button type="button" class="share-btn share-copy" data-copy-url="https://peritrigkas.netlify.app/blog-cicd-pipeline-jenkins-ai.html" aria-label="Copy link"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 1H4a2 2 0 0 0-2 2v13h2V3h11V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h10v14z"/></svg></button>
+      <a class="share-btn" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fperitrigkas.netlify.app%2Ffield-notes%2Fcicd-pipeline-jenkins-ai%2F" target="_blank" rel="noopener" aria-label="Share on LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.07 2.07 0 1 1 0-4.13 2.07 2.07 0 0 1 0 4.13zM7.12 20.45H3.55V9h3.57v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"/></svg></a>
+      <a class="share-btn" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fperitrigkas.netlify.app%2Ffield-notes%2Fcicd-pipeline-jenkins-ai%2F&amp;text=From%20Commit%20to%20Production%3A%20A%20Jenkins%20Pipeline%2C%20Stage%20by%20Stage%20%E2%80%94%20Field%20notes%20by%20Peri%20Trigkas" target="_blank" rel="noopener" aria-label="Share on X"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.24 2.25h3.31l-7.23 8.26 8.5 11.24h-6.66l-5.21-6.82-5.97 6.82H1.68l7.73-8.84L1.25 2.25h6.83l4.71 6.23 5.45-6.23zm-1.16 17.52h1.83L7.01 4.13H5.05l12.03 15.64z"/></svg></a>
+      <a class="share-btn" href="mailto:?subject=From%20Commit%20to%20Production%3A%20A%20Jenkins%20Pipeline%2C%20Stage%20by%20Stage&amp;body=From%20Commit%20to%20Production%3A%20A%20Jenkins%20Pipeline%2C%20Stage%20by%20Stage%20%E2%80%94%20Field%20notes%20by%20Peri%20Trigkas%0A%0Ahttps%3A%2F%2Fperitrigkas.netlify.app%2Ffield-notes%2Fcicd-pipeline-jenkins-ai%2F" aria-label="Share by email"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 4h20a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1zm10 7.13L3.5 6H20.5L12 11.13zM3 8.24V18h18V8.24l-9 5.4-9-5.4z"/></svg></a>
+      <a class="share-btn" href="https://wa.me/?text=From%20Commit%20to%20Production%3A%20A%20Jenkins%20Pipeline%2C%20Stage%20by%20Stage%20%E2%80%94%20Field%20notes%20by%20Peri%20Trigkas%20https%3A%2F%2Fperitrigkas.netlify.app%2Ffield-notes%2Fcicd-pipeline-jenkins-ai%2F" target="_blank" rel="noopener" aria-label="Share on WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm0 1.67c2.2 0 4.27.86 5.83 2.42a8.19 8.19 0 0 1 2.42 5.83c0 4.54-3.7 8.24-8.25 8.24a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.16 8.16 0 0 1-1.25-4.38c0-4.54 3.7-8.24 8.24-8.24zm4.52 10.35c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.24-.64.8-.78.97-.14.16-.29.18-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.24-1.47-1.38-1.72-.14-.25-.02-.38.11-.5.11-.11.25-.29.37-.43.13-.14.17-.24.25-.41.08-.16.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.42-.56-.42-.14 0-.31-.02-.47-.02-.16 0-.43.06-.65.31-.22.24-.86.84-.86 2.05 0 1.21.88 2.38 1 2.54.12.16 1.73 2.64 4.19 3.7.59.26 1.04.41 1.4.52.59.19 1.12.16 1.54.1.47-.07 1.47-.6 1.67-1.18.21-.58.21-1.08.14-1.18-.06-.11-.22-.17-.47-.29z"/></svg></a>
+      <button type="button" class="share-btn share-copy" data-copy-url="https://peritrigkas.netlify.app/field-notes/cicd-pipeline-jenkins-ai/" aria-label="Copy link"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 1H4a2 2 0 0 0-2 2v13h2V3h11V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h10v14z"/></svg></button>
     </div>
-    <div class="post-cover"><img src="img/blog/cicd-pipeline-jenkins-ai/cover.jpg" alt="From Commit to Production: A Jenkins Pipeline, Stage by Stage" loading="lazy"></div>
+    <div class="post-cover"><img src="../../img/blog/cicd-pipeline-jenkins-ai/cover.jpg" alt="From Commit to Production: A Jenkins Pipeline, Stage by Stage" loading="lazy"></div>
   </div>
 </article>
 
@@ -73,10 +73,10 @@
 <p>A CI/CD pipeline is really just a series of gates, each one cheaper to fail at than the next. <strong>Fail fast</strong> on a lint error, not three hours later on a failed production deploy. Here&#39;s roughly how I&#39;ve built these in Jenkins, and where AI tooling actually changes the work rather than just decorating it.</p>
 <h2>What actually needs to be in the pipeline</h2>
 <p>Every stage exists to catch a specific class of problem before it gets more expensive to fix, but the exact shape of a pipeline varies by team and by what&#39;s actually shipping. The dashboard below is one example of what that can look like, not a template to copy stage for stage:</p>
-<p><img src="img/blog/cicd-pipeline-jenkins-ai/cicd-dashboard.jpg" alt="A CI/CD pipeline dashboard running from Commit through Lint, Unit Tests, Contract Tests, Build, Staging, Integration Tests, Performance Tests, Approval, Production, Smoke Tests, and Monitor, with a note that failures are cheaper to catch early and more expensive the later they&#39;re found"></p>
+<p><img src="../../img/blog/cicd-pipeline-jenkins-ai/cicd-dashboard.jpg" alt="A CI/CD pipeline dashboard running from Commit through Lint, Unit Tests, Contract Tests, Build, Staging, Integration Tests, Performance Tests, Approval, Production, Smoke Tests, and Monitor, with a note that failures are cheaper to catch early and more expensive the later they're found"></p>
 <p>What actually matters isn&#39;t matching those box names, it&#39;s a handful of decisions that hold regardless of the tool. A PR or preview environment should answer one question fast: does this obviously work. Unit tests, static analysis, and a quick contract check against whatever the change touches belong there, anything slower than a few minutes defeats the point of a preview environment in the first place. <strong>Staging</strong> is where it&#39;s worth being slower and more thorough: full integration tests, a proper regression pass, a performance run if the change touches anything latency-sensitive. <strong>Production</strong> itself mostly runs smoke tests and leans on <strong>monitoring</strong> rather than more testing, by that point the job is watching for problems, not hunting for them.</p>
 <p>The biggest lever for keeping a pipeline fast is refusing to spin up more than a given stage actually needs. If a test only cares that your service sends the right request to a downstream API, <strong>mock</strong> that API rather than standing up the real thing, a WireMock stub or a Pact contract answers the same question without the cost of a second service booting, a shared database seeding, or a flaky network call between two things that don&#39;t need to be real yet. Save the real downstream dependencies for the handful of tests that genuinely need to prove the integration works end to end, and let everything else run against a mock that starts in milliseconds instead of minutes. That distinction, mocked versus real, is usually a better lever for pipeline speed than <strong>parallelizing</strong> more aggressively, though that helps too: any stages with no dependency on each other&#39;s output should run at the same time rather than back to back, the only real cost is a bit more compute, and compute is cheaper than a developer waiting.</p>
-<p><img src="img/blog/cicd-pipeline-jenkins-ai/component-mock.jpg" alt="A component test stage exchanging requests with a mock service: POST /payments, GET /accounts, POST /refunds going out, stubbed 201, 400, and 503 responses coming back, covering the happy path, invalid input, and downstream failure"></p>
+<p><img src="../../img/blog/cicd-pipeline-jenkins-ai/component-mock.jpg" alt="A component test stage exchanging requests with a mock service: POST /payments, GET /accounts, POST /refunds going out, stubbed 201, 400, and 503 responses coming back, covering the happy path, invalid input, and downstream failure"></p>
 <p>Manual approval before production is the one gate I go back and forth on. Done right, it&#39;s someone glancing at a diff and catching the one thing no pipeline would ever know to check, a deploy window that&#39;s a bad idea this week for reasons that have nothing to do with the code. Done lazily, it&#39;s a rubber stamp nobody&#39;s really reading anymore, friction dressed up as safety. I keep it for anything with real blast radius, how trades settle, anything touching money, and skip it for a marketing page nobody&#39;s betting anything on.</p>
 <p>End-to-end tests are the other one worth arguing about. They&#39;re the closest thing to proof that a real user journey actually works, and nothing else gives quite that signal. They&#39;re also slow, expensive to maintain, and the first thing to go flaky when an unrelated part of the system changes. <strong>Shift-left testing</strong> is the argument that most of what E2E tests are trying to catch should be caught earlier and cheaper: contract tests instead of a full round trip through three services, component tests instead of driving a real browser, static analysis instead of waiting for a test to fail at all. I don&#39;t think that makes E2E tests obsolete, it makes them something to spend sparingly, reserved for the handful of journeys where nothing else gives real confidence, checkout, login, whatever actually loses money or trust if it breaks, and pushes everything else as far left as it&#39;ll go.</p>
 <p>Jenkins&#39; job in all of this isn&#39;t just running commands in order, it&#39;s the thing that fails loudly and stops the pipeline the moment any of these gates doesn&#39;t pass, so a bad build physically cannot reach the next stage.</p>
@@ -98,13 +98,13 @@
     <div class="contact-links">
       <a href="mailto:ptrigkas@gmail.com">✉ ptrigkas@gmail.com</a>
       <a href="tel:07827421616">☎ 07827 421616</a>
-      <a href="index.html#top">📍 Cardiff, Wales</a>
+      <a href="../../index.html#top">📍 Cardiff, Wales</a>
     </div>
     <div class="foot-note mono">Wired for growth — one small check at a time.</div>
   </div>
 </footer>
 
-<script src="js/app.js" defer></script>
+<script src="../../js/app.js" defer></script>
 
 </body>
 </html>

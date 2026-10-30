@@ -39,7 +39,7 @@ There are hundreds of things you could count. At a startup, you want a small set
 - **Escaped defects**, meaning bugs found in production, broken down by severity. The single most honest quality number. Most teams use a numbered severity scale where lower means worse: **Sev1** is critical (a core service down, data lost or exposed, money directly affected), **Sev2** is major (an important feature broken, but with a workaround or only some users hit), and **Sev3** and below are minor or cosmetic. The exact definitions vary between companies.
 - **Change failure rate**: the percentage of deployments that cause an incident, a rollback or a hotfix.
 - **Time to restore**: how long it takes to recover when something does break.
-- **SLOs and error budgets** for the journeys that make money: sign-up, login, checkout. Latency belongs here too, as p95 and p99 rather than the average (I covered why in [the percentiles post](blog-p95-p99-vs-average.html)).
+- **SLOs and error budgets** for the journeys that make money: sign-up, login, checkout. Latency belongs here too, as p95 and p99 rather than the average (I covered why in [the percentiles post](field-notes/p95-p99-vs-average/)).
 
 **2. Delivery flow: how fast change gets to users safely**
 
@@ -52,7 +52,7 @@ There are hundreds of things you could count. At a startup, you want a small set
 - **Flaky rate**: how often a test fails and then passes on the same commit with no code change.
 - **Suite duration** and its trend.
 - **Critical journey coverage**: which of the business-critical user journeys have automated checks and which still rely on someone clicking through them. This is far more useful than line coverage.
-- **Mutation score** on core modules, if you want to know whether the tests would actually notice a bug ([more on that here](blog-mutation-testing.html)).
+- **Mutation score** on core modules, if you want to know whether the tests would actually notice a bug ([more on that here](field-notes/mutation-testing/)).
 
 **4. Cost: what quality is costing in time and money**
 
@@ -100,7 +100,7 @@ What makes this case strong:
 
 ### Case B: rolling out contract testing
 
-The problem: services talk to each other through APIs that change, and some of those changes have broken production. I've written before about how [mocks drift away from the real service](blog-mock-vs-real-tradeoff.html); contract testing is the usual fix.
+The problem: services talk to each other through APIs that change, and some of those changes have broken production. I've written before about how [mocks drift away from the real service](field-notes/mock-vs-real-tradeoff/); contract testing is the usual fix.
 
 The evidence here comes from incident history, and it's thinner. Illustrative numbers:
 
